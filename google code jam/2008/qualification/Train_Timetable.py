@@ -35,9 +35,21 @@ Output
 For each test case, output one line containing "Case #x: " 
 followed by the number of trains that must start at A and the number of trains that must start at B.
 """
-def findMinNumTrain(NA,NB,T):
-    result =0
-    return result
+from heapq import heappop,heappush
+def findMinNumTrain(trips,T):
+    start = [0, 0]
+    trains = [[], []]
+    for trip in trips:
+        station = trip[2]
+        # check if there is a train at the station
+        if trains[station] and trains[station][0]<=trip[0]:
+            heappop(trains[station])
+        else:
+            # no train available, adding one
+            start[station]+=1
+        # add an available train at the other station, adding the turnover time
+        heappush(trains[1-station],trip[1]+T)
+    return start
 def convertToMinute(time):
     hour,minute= time.split(":")
     return int(hour)*60+int(minute)
@@ -47,14 +59,15 @@ def solve(infile,outfile):
     outfile    = open(outfile,"w")
     for testCase in range(1,N+1):
         turnAroundTime = int(handle.readline().strip())
-        NA,NB  = [int(item) for item in handle.readline().strip()]
-        NATimes,NBTimes  = [],[]
+        NA,NB  = [int(item) for item in handle.readline().strip().split()]
+        trips = []
         for i in range(NA):
             departure,arrival =  handle.readline().strip().split()
-            NATimes.append([convertToMinute(departure),convertToMinute(arrival)])
+            trips.append([convertToMinute(departure),convertToMinute(arrival),0])
         for i in range(NB):
             departure,arrival = handle.readline().strip().split()
-            NBTimes.append([convertToMinute(departure),convertToMinute(arrival)])
-        result = findMinNumTrain(NA,NB,turnAroundTime)
-        outfile.write("Case #{}: {}\n".format(testCase,result))
+            trips.append([convertToMinute(departure),convertToMinute(arrival),1])
+        trips.sort()
+        A,B = findMinNumTrain(trips,turnAroundTime)
+        outfile.write("Case #{}: {} {}\n".format(testCase,A,B))
     outfile.close()
