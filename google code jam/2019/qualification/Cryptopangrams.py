@@ -48,11 +48,14 @@ T = int(input().strip())
 def solve(array):
     result = ""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    primes = set()
     intersectionNum = []
     for i in range(len(array)-1):
         num1,num2 = array[i],array[i+1]
         largestGCD = gcd(num1,num2)
-        intersectionNum.append(num1)
+        if largestGCD!= num1: # this means this is a prime
+            primes.add(largestGCD)
+        intersectionNum.append(largestGCD)
     
     return result
             
