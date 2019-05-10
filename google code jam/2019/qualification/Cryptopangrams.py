@@ -47,23 +47,126 @@ from math import gcd
 T = int(input().strip())
 def solve(array):
     result = ""
+    unrepeated = [array[0]]
+    for item in array:
+        if item != unrepeated[-1]:
+            unrepeated.append(item)
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     primes = set()
-    intersectionNum = []
+    # array store need resolve number, for example, AB, BA gives gcd AB
+    for i in range(len(unrepeated)-1):
+        num1,num2 = unrepeated[i],unrepeated[i+1]
+        largestGCD = gcd(num1,num2)
+        primes.add(largestGCD)
+        # we can find the previous prime
+        previousPrime = num1/largestGCD
+        afterPrime    = num2/largestGCD
+        primes.add(previousPrime)
+        primes.add(afterPrime)     
+        if len(primes)==26:
+            break
+    primes = sorted(list(primes))
+
+    unresolved = []
+    d = {primes[i]:alphabet[i] for i in range(26)}
+#    print (d)
+    currentPrime = None
     for i in range(len(array)-1):
         num1,num2 = array[i],array[i+1]
-        largestGCD = gcd(num1,num2)
-        if largestGCD!= num1: # this means this is a prime
-            primes.add(largestGCD)
-        intersectionNum.append(largestGCD)
-    
+        if num1 == num2:
+            if currentPrime: # our currentPrime basically would be the connection
+                result+= d[currentPrime]
+                nextPrime    = num2/currentPrime
+                currentPrime  = nextPrime
+            else:
+                unresolved.append(num1)
+        else: # CASE AB,BC
+            # find the set
+            if not currentPrime:
+                for item in primes:
+                    if num1%item ==0:
+                        firstSet = [num1/item,item]
+                    if num2% item ==0:
+                        secondSet = [num2/item,item]
+                for item in firstSet:
+                    if item in secondSet:
+                        currentPrime = item
+                        break
+                firstSet.remove(item)
+                previousPrime = firstSet[0]
+                secondSet.remove(item)
+                nextPrime     = secondSet[0]
+                result+=d[previousPrime]+d[currentPrime]
+#                print (unresolved)
+                for item in unresolved[::-1]:
+                    prime = item/previousPrime
+#                    print (d[prime])
+                    result=d[prime]+result
+                    previousPrime = prime
+                currentPrime = nextPrime
+            else:
+                result+=d[currentPrime]
+                currentPrime = num2/currentPrime
+    result+=d[currentPrime]       
     return result
             
-        
-                
+def generateTest():
+    d  = {2.0: 'A',
+ 89.0: 'B',
+ 109.0: 'C',
+ 211.0: 'D',
+ 239.0: 'E',
+ 353.0: 'F',
+ 479.0: 'G',
+ 601.0: 'H',
+ 701.0: 'I',
+ 827.0: 'J',
+ 883.0: 'K',
+ 1021.0: 'L',
+ 1051.0: 'M',
+ 1087.0: 'N',
+ 1277.0: 'O',
+ 1381.0: 'P',
+ 1531.0: 'Q',
+ 1571.0: 'R',
+ 1669.0: 'S',
+ 1861.0: 'T',
+ 1973: 'U',
+ 1997.0: 'V',
+ 2137.0: 'W',
+ 2213.0: 'X',
+ 2281.0: 'Y',
+ 2411.0: 'Z'}
+    x=  {'A': 2.0,
+ 'B': 89.0,
+ 'C': 109.0,
+ 'D': 211.0,
+ 'E': 239.0,
+ 'F': 353.0,
+ 'G': 479.0,
+ 'H': 601.0,
+ 'I': 701.0,
+ 'J': 827.0,
+ 'K': 883.0,
+ 'L': 1021.0,
+ 'M': 1051.0,
+ 'N': 1087.0,
+ 'O': 1277.0,
+ 'P': 1381.0,
+ 'Q': 1531.0,
+ 'R': 1571.0,
+ 'S': 1669.0,
+ 'T': 1861.0,
+ 'U': 1973,
+ 'V': 1997.0,
+ 'W': 2137.0,
+ 'X': 2213.0,
+ 'Y': 2281.0,
+ 'Z': 2411.0}   
+
 for i in range(T):
     sys.stdout.flush()
     N,L = [int(i) for i in input().strip().split()]
     array = [int(i) for i in input().strip().split()]
-    result = solve(N,L,array)
+    result = solve(array)
     print ("Case #{}: {}".format(i+1,result))
