@@ -562,3 +562,88 @@ def arrayTriangleFast(arr):
 def findPPairLR(charles,delilah,K,N):
     result = 0
     return result
+#763. Partition Labels
+# A string S of lowercase letters is given. We want to partition this string into 
+#    as many parts as possible so that each letter appears in at most one part, 
+#    and return a list of integers representing the size of these parts.
+def partitionLabel(label):
+    d= {}
+    result = []
+    for index in range(len(label)):
+        letter= label[index]
+#        print (index,letter)
+        if letter not in d:
+            result.append(1)
+            d[letter] = len(result)
+        else:
+            currentIndex= d[letter]
+#            print (580,letter,index,currentIndex)
+            if currentIndex!= len(result):
+                for i in range(len(result)-1,currentIndex-1,-1):
+                    currentS = result.pop()
+                    for key in d:
+                        if d[key]==i+1:
+                            d[key] = currentIndex
+                    result[currentIndex-1]+=currentS
+            d[letter]= len(result)
+            result[-1]+=1     
+    return result
+    
+#986. Interval List Intersections
+#
+#Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
+#
+#Return the intersection of these two interval lists.
+#
+#(Formally, a closed interval [a, b] (with a <= b) denotes the set of real numbers x 
+#with a <= x <= b.  The intersection of two closed intervals is a set of real numbers 
+#that is either empty, or can be represented as a closed interval.  For example, the intersection of 
+#[1, 3] and [2, 4] is [2, 3].)
+A = [[0,2],[5,10],[13,23],[24,25]]
+B = [[1,5],[8,12],[15,24],[25,26]]
+def intervalIntersection(A,B):
+    i = 0
+    j = 0
+    result = []
+    while i<len(A) and j<len(B):
+        intervalA = A[i]
+        intervalB = B[j]
+        # check if those 2 interval intersect
+        if (intervalA[0]>=intervalB[0] and intervalA[0]<=intervalB[1]): # means that B[0], A[0],min(B[1],A[1]),max(B[1],A[1])
+            # intersection is equal to A[0],min(B[1],A[1])
+            intersection = [intervalA[0],min(intervalB[1],intervalA[1])]
+            # if A[1] greater than B[1], we keep i, increase j
+            if intervalA[1]>intervalB[1]:
+                j+=1
+            elif intervalA[1]<intervalB[1]:
+                i+=1
+            # if equal, increase both
+            else:
+                i+=1
+                j+=1
+            result.append(intersection)
+        elif (intervalB[0]>=intervalA[0] and intervalB[0]<=intervalA[1]): # means that A[0], B[0],min(B[1],A[1]),max(B[1],A[1])
+            intersection = [intervalB[0],min(intervalB[1],intervalA[1])]
+            if intervalA[1]>intervalB[1]:
+                j+=1
+            elif intervalA[1]<intervalB[1]:
+                i+=1
+            # if equal, increase both
+            else:
+                i+=1
+                j+=1
+            result.append(intersection)
+        else: # no intersection, we keep the one with higher interval
+            if intervalA[0]>intervalB[1]:
+                j+=1
+            elif intervalB[0]>intervalA[1]:
+                i+=1
+    return result
+
+#959. Regions Cut By Slashes
+#In a N x N grid composed of 1 x 1 squares, each 1 x 1 square consists of a /, \, or blank space. 
+# These characters divide the square into contiguous regions.
+#
+#(Note that backslash characters are escaped, so a \ is represented as "\\".)
+#
+#Return the number of regions.
