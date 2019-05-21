@@ -640,10 +640,22 @@ def intervalIntersection(A,B):
                 i+=1
     return result
 
-#959. Regions Cut By Slashes
-#In a N x N grid composed of 1 x 1 squares, each 1 x 1 square consists of a /, \, or blank space. 
-# These characters divide the square into contiguous regions.
+#931. Minimum Falling Path Sum
 #
-#(Note that backslash characters are escaped, so a \ is represented as "\\".)
+#Given a square array of integers A, we want the minimum sum of a falling path through A.
 #
-#Return the number of regions.
+#A falling path starts at any element in the first row, and chooses one element from each row.  
+#The next row's choice must be in a column that is different from the previous row's column by at most one.
+    
+def minFallingPathSum(A):
+    r = len(A)
+    c = len(A[0])
+    for i in range(1,r):
+        for j in range(c):
+            if j==0:
+                A[i][j] = A[i][j]+min(A[i-1][j],A[i-1][j+1])
+            elif j==c-1:
+                A[i][j] = A[i][j]+min(A[i-1][j-1],A[i-1][j])
+            else:
+                A[i][j] = A[i][j]+min(A[i-1][j],A[i-1][j+1],A[i-1][j-1])
+    return min(A[r-1])

@@ -45,27 +45,27 @@ Output
 For each test case, output one line containing Case #x: y, where x is the test case number (starting from 1) and y 
 is either the minimum number of hacks needed to accomplish the goal, or IMPOSSIBLE if it is not possible.
 """
-import sys
-
+import sys,random
+from itertools import product
 def solve(D,string):
+    string = list(string)
     if string.count("S")>D:
         return "IMPOSSIBLE"
 
     currentTotal = 0
     gunValue =[]
     initial = 1
-    totals  = []
     for letter in string:
         if letter=="C":
             initial+=initial
         else:
             currentTotal+=initial
-        totals.append(currentTotal)
         gunValue.append(initial)
     if currentTotal <=D:
         return 0
     count = 0
-    while True: # while there are still CS available
+    indexOfC = findSCReverse(string)
+    while indexOfC!=-1: # while there are still CS available
         indexOfC = findSCReverse(string)
         count +=1
         if indexOfC==0:
@@ -77,16 +77,18 @@ def solve(D,string):
         else:
             # we wll recalculate our current Total
             # set up current Total, and current initial
-            currentTotal = totals[indexOfC-1]
-            initial = gunValue[indexOfC-1]
+            currentTotal = 0
+            initial      = 1
             # we swap CS into SC
             string[indexOfC]= "S"
             string[indexOfC+1]= "C"
-            for i in range(indexOfC,len(string)):
+
+            for letter in string:
                 if letter=="C":
                     initial+=initial
                 else:
                     currentTotal+=initial
+                        
         if currentTotal<=D:
             return count
             
@@ -96,9 +98,69 @@ def findSCReverse(string):
             return i-1
     return -1
                 
-T = int(input())
-for i in range(1, T + 1):
-    D, string = input().split()
-    result = solve(int(D),list(string))
-    print("Case #{}: {}".format(T, result))
-    sys.stdout.flush()
+#T = int(input())
+#for i in range(1, T + 1):
+#    D, string = input().split()
+#    result = solve(int(D),list(string))
+#    print("Case #{}: {}".format(T, result))
+#    sys.stdout.flush()
+    
+def solve1(D,comp):
+    count = 0
+    comp = list(comp)
+    D= int(D)
+    init = []
+    current = 1
+    total = 0
+    for l in comp:
+        if l =="C":
+            current*=2
+        else:
+            total+=current
+            count+=1
+        init.append(current)
+    if total<=D:
+        return 0
+    if count >D:
+        return "IMPOSSIBLE"
+    r = 0
+    size = len(comp)
+#    print (init)
+#    print (comp)
+    index = findSC1(comp,size)
+    while index!=-1:
+        if index==0:
+            total-=1
+        else:
+            total-=init[index-1]
+        r+=1
+        if total<=D:
+            return r
+        comp[index]="S"
+        comp[index+1]="C"
+        for i in range(index,size):
+            if comp[i]=="S":
+                init[i]=init[i-1]
+            else:
+                init[i]=init[i-1]*2
+#        print (init)
+#        print (comp)  
+        index = findSC1(comp,size)
+
+
+def findSC1 (comp,size):
+    for i in range(size-1,0,-1):
+        if comp[i]=="S" and comp[i-1]=="C":
+            return i-1
+    return -1
+for p in product("SC",repeat=8):
+    D = random.randint(1,10^2)
+    p = "".join(list(p))
+    r = solve(D,list(p))
+    try:
+        r1 = solve1(D,list(p))
+    except TypeError:
+        print (TypeError,D,p)
+        break
+    if r!=r1:
+        print (D,p,r,r1)
