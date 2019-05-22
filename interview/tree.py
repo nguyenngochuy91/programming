@@ -47,14 +47,43 @@ def insertIntoMaxTree(root,val):
             node = root
     return node
 
-#979. Distribute Coins in Binary Tree
+#919. Complete Binary Tree Inserter
 #
-#Given the root of a binary tree with N nodes, each node in the tree has node.val coins, and there are N coins total.
+#A complete binary tree is a binary tree in which every level, except possibly the last, is 
+#completely filled, and all nodes are as far left as possible.
 #
-#In one move, we may choose two adjacent nodes and move one coin from one node to another. 
-# (The move may be from parent to child, or from child to parent.)
+#Write a data structure CBTInserter that is initialized with a complete binary tree and supports the following operations:
 #
-#Return the number of moves requi
-red to make every node have exactly one coin.
-def distributeCoins(root):
-    return root
+#CBTInserter(TreeNode root) initializes the data structure on a given tree with head node root;
+#CBTInserter.insert(int v) will insert a TreeNode into the tree with value node.val = v so that the tree remains complete, 
+#and returns the value of the parent of the inserted TreeNode;
+#CBTInserter.get_root() will return the head node of the tree.
+ 
+class CBTInserter:
+
+    def __init__(self, root: TreeNode):
+        self.root = root
+
+    def insert(self, v: int) -> int:
+        root = self
+        level = [root]
+        while level:
+            nextLevel = []
+            for node in level:
+                if not node.left:
+                    newNode = TreeNode(v)
+                    node.left= newNode
+                    return node.val
+                else:
+                    if not node.right:
+                        newNode = TreeNode(v)
+                        node.right= newNode
+                        return node.val
+                    else:
+                        nextLevel.append(node.left)
+                        nextLevel.append(node.right)
+            level= nextLevel
+            
+
+    def get_root(self) -> TreeNode:
+        return self.root
