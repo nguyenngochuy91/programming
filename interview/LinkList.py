@@ -95,4 +95,17 @@ def numComponents(head,G):
                 res+=1
         root = root.next
     return res
-    return None
+
+def swapPairs(head) :
+    if head and head.next:
+        node = swapPairs(head.next.next)
+        temp = head
+        head = head.next
+        head.next = temp
+        # link
+        temp.next = node
+        return head
+    elif head:
+        return head
+    else:
+        return None

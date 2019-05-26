@@ -725,3 +725,51 @@ def camelMatch(queries,pattern):
         else:
             res.append(False)
     return res
+
+#712. Minimum ASCII Delete Sum for Two Strings
+#
+#Given two strings s1, s2, find the lowest ASCII sum of deleted characters to make two strings equal.
+def minimumDeleteSum(s1,s2):
+    dp =[]
+    for i in range(len(s1)+1):
+        temp =[]
+        for j in range(len(s2)+1):
+            temp.append(None)
+        dp.append(temp)
+    dp[0][0]=0
+    for i in range(1,len(s1)+1):
+        dp[i][0]= dp[i-1][0]+ord(s1[i-1])
+    for j in range(1,len(s2)+1):
+        dp[0][j] = dp[0][j-1]+ord(s2[j-1])
+    for i in range(1,len(s1)+1):
+        for j in range(1,len(s2)+1):
+            if s1[i-1]==s2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                dp[i][j] = min(dp[i-1][j]+ord(s1[i-1]),dp[i][j-1]+ord(s2[j-1]))
+    return dp[-1][-1]
+
+#932. Beautiful Array
+#For some fixed N, an array A is beautiful if it is a permutation of the integers 1, 2, ..., N, such that:
+#
+#For every i < j, there is no k with i < k < j such that A[k] * 2 = A[i] + A[j].
+#
+#Given N, return any beautiful array A.  (It is guaranteed that one exists.)
+
+def beautifulArray(N):
+    return None
+#
+#Write a function that reverses a string. The input string is given as an array of characters char[].
+#
+#Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+#
+#You may assume all the characters consist of printable ascii characters.
+def reverseString(s):
+    def reverse(s,i,j):
+        if i<j:
+            temp = s[i]
+            s[i] = s[j]
+            s[j] = temp
+            reverse(s,i+1,j-1)
+    reverse(s,0,len(s)-1)
+        
