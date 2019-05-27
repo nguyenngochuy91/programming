@@ -28,6 +28,9 @@ class ListNode:
             array.append(head.val)
             head= head.next
         return array
+    # reverse recursively
+    def reverseRecursively(self):
+        return None
         
 #1019. Next Greater Node In Linked List
 #
@@ -95,7 +98,7 @@ def numComponents(head,G):
                 res+=1
         root = root.next
     return res
-
+# swap pair of link
 def swapPairs(head) :
     if head and head.next:
         node = swapPairs(head.next.next)

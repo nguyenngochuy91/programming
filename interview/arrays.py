@@ -773,3 +773,17 @@ def reverseString(s):
             reverse(s,i+1,j-1)
     reverse(s,0,len(s)-1)
         
+# pascal triangle
+def generate(numRows):
+    """
+    :type numRows: int
+    :rtype: List[List[int]]
+    """
+    res = [[1],[1,1]]
+    for i in range(2,numRows):
+        temp=[1]
+        for j in range(i-1):
+            temp.append(res[-1][j]+res[-1][j+1])
+        temp.append(1)
+        res.append(temp)
+    return res[:numRows]
