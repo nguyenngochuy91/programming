@@ -30,8 +30,17 @@ class ListNode:
         return array
     # reverse recursively
     def reverseRecursively(self):
-        return None
-        
+        def recursive(head,prev):
+            if not head.next:
+                return (head,head)
+            else:
+                nextHead,root = recursive(head.next,head)
+                head.next = prev
+                nextHead.next = head
+                return head,root
+        head,root = recursive(self,None)
+        return root
+
 #1019. Next Greater Node In Linked List
 #
 #We are given a linked list with head as the first node.  Let's number the nodes in the list: node_1, node_2, node_3, ... etc.
@@ -112,3 +121,13 @@ def swapPairs(head) :
         return head
     else:
         return None
+
+def power(x,n):
+    if n==0:
+        return 1
+    elif n%2:
+        return x*power(x,n-1)
+    else:
+        return power(x*x,n//2)
+def mergeTwoLists(l1, l2):
+    return None
