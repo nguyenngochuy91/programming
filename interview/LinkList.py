@@ -129,5 +129,28 @@ def power(x,n):
         return x*power(x,n-1)
     else:
         return power(x*x,n//2)
+#Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
 def mergeTwoLists(l1, l2):
+    head = ListNode(None)
+    def dfs(l1,l2,currentHead):
+        if l1 and l2:
+            if l1.val>l2.val:
+                currentHead.next= l2
+                currentHead = l2
+                dfs(l1,l2.next,currentHead)
+            else:
+                currentHead.next = l1
+                currentHead = l1
+                dfs(l1.next,l2,currentHead)
+        elif l1:
+            currentHead.next=l1
+        elif l2:
+            currentHead.next = l2
+    dfs(l1,l2,head)
+    return head.next
+# On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace each occurrence of 0
+# with 01, and each occurrence of 1 with 10.
+#
+#Given row N and index K, return the K-th indexed symbol in row N. (The values of K are 1-indexed.) (1 indexed).
+def kthGrammar(N,K):
     return None
