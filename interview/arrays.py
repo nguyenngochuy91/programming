@@ -810,3 +810,32 @@ def kthGrammar(n, k):
     if flip%2:
         return 1
     return 0
+# merge sort iterative
+def merge(left_list, right_list):
+    left_cursor = right_cursor = 0
+    ret = []
+    while left_cursor < len(left_list) and right_cursor < len(right_list):
+        if left_list[left_cursor] < right_list[right_cursor]:
+            ret.append(left_list[left_cursor])
+            left_cursor += 1
+        else:
+            ret.append(right_list[right_cursor])
+            right_cursor += 1
+    
+    # append what is remained in either of the lists
+    ret.extend(left_list[left_cursor:])
+    ret.extend(right_list[right_cursor:])
+    
+    return ret
+def mergeSortIterative(nums):
+    array = [[num] for num in nums]
+    while len(array)>1:
+        temp = []
+        for i in range(0,len(array),2):
+            if i+1<len(array):
+                ret = merge(array[i],array[i+1])
+            else:
+                ret = array[i]
+            temp.append(ret)
+        array = temp
+    return array[0]
