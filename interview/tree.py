@@ -263,25 +263,23 @@ def smallestFromLeaf(self, root):
 
 
 
-#684. Redundant Connection
-#
-#In this problem, a tree is an undirected graph that is connected and has no cycles.
-#
-#The given input is a graph that started as a tree with N nodes (with distinct values 1, 2, ..., N), 
-#with one additional edge added. The added edge has two different vertices chosen from 1 to N, and was not an 
-#edge that already existed.
-#
-#The resulting graph is given as a 2D-array of edges. Each element of edges is a pair [u, v] with u < v, 
-#that represents an undirected edge connecting nodes u and v.
-#
-#Return an edge that can be removed so that the resulting graph is a tree of N nodes. If there are 
-#multiple answers, return the answer that occurs last in the given 2D-array. The answer edge [u, v] should be in 
-#the same format, with u < v.
+#95. Unique Binary Search Trees II
+#Given an integer n, generate all structurally unique BST's (binary search trees) that store values 1 ... n.
 
-def findRedundantConnection(self, edges):
-    """
-    :type edges: List[List[int]]
-    :rtype: List[int]
-    """
-    
+def generateTrees(n):
     return None
+#Validate Binary Search Tree
+#Given a binary tree, determine if it is a valid binary search tree (BST).
+#
+#Assume a BST is defined as follows:
+#
+#The left subtree of a node contains only nodes with keys less than the node's key.
+#The right subtree of a node contains only nodes with keys greater than the node's key.
+#Both the left and right subtrees must also be binary search trees.
+def isValidBST(self, root):
+    """
+    :type root: TreeNode
+    :rtype: bool
+    """
+    if root:
+        return root

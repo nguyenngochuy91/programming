@@ -787,3 +787,26 @@ def generate(numRows):
         temp.append(1)
         res.append(temp)
     return res[:numRows]
+
+# On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace each occurrence of 0
+# with 01, and each occurrence of 1 with 10.
+#
+#Given row N and index K, return the K-th indexed symbol in row N. (The values of K are 1-indexed.) (1 indexed).
+def kthGrammar(n, k):
+    """
+    :type N: int
+    :type K: int
+    :rtype: int
+    """
+    k-=1
+    flip = 0
+    while n>1:
+        if k%2:
+            flip+=1
+        k=k//2
+        n-=1
+    if k%2:
+        flip+=1
+    if flip%2:
+        return 1
+    return 0
