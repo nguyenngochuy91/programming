@@ -839,3 +839,30 @@ def mergeSortIterative(nums):
             temp.append(ret)
         array = temp
     return array[0]
+
+
+#Search a 2D Matrix II
+#Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+#
+#Integers in each row are sorted in ascending from left to right.
+#Integers in each column are sorted in ascending from top to bottom.
+# O(m+n)
+def searchMatrix(matrix, target):
+    """
+    :type matrix: List[List[int]]
+    :type target: int
+    :rtype: bool
+    """
+    row = len(matrix)
+    col = len(matrix[0])
+    i = 0
+    j = col-1
+    while  i<row and j>=0:
+        val = matrix[i][j]
+        if target== val:
+            return True
+        elif target>val: # this means increase the number of row:
+            i+=1
+        else:
+            j-=1
+    return False

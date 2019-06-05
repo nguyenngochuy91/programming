@@ -276,10 +276,43 @@ def generateTrees(n):
 #The left subtree of a node contains only nodes with keys less than the node's key.
 #The right subtree of a node contains only nodes with keys greater than the node's key.
 #Both the left and right subtrees must also be binary search trees.
-def isValidBST(self, root):
-    """
-    :type root: TreeNode
-    :rtype: bool
-    """
+def isValidBST( root: TreeNode) -> bool:
+    assignMinMax(root)
+  
+    return checkBST(root)
+def checkBST(root):
     if root:
-        return root
+        
+        if root.left and root.right:
+            return root.val>root.left.max and root.val <root.right.min and checkBST(root.left) and checkBST(root.right)
+        elif root.left and not root.right:
+            return root.val>root.left.max and checkBST(root.left) 
+        elif root.right and not root.left:
+            return root.val<root.right.min and checkBST(root.right)
+        else:
+            return True
+    else:
+        return True
+def assignMinMax(root):
+    if root:
+        if not root.left and not root.right:
+            root.max = root.val
+            root.min = root.val
+ 
+        elif root.left and root.right:
+            assignMinMax(root.left)
+            assignMinMax(root.right)
+            maxL,minL = root.left.max, root.left.min
+            maxR,minR = root.right.max, root.right.min
+            root.max = max(root.val,maxL,maxR)
+            root.min = min(root.val,minL,minR)
+        elif root.right and not root.left:
+            assignMinMax(root.right)
+            maxR,minR = root.right.max, root.right.min
+            root.max = max(root.val,maxR)
+            root.min = min(root.val,minR)               
+        elif root.left and not root.right:
+            assignMinMax(root.left)
+            maxL,minL = root.left.max, root.left.min
+            root.max = max(root.val,maxL)
+            root.min = min(root.val,minL)
