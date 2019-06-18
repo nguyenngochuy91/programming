@@ -866,3 +866,96 @@ def searchMatrix(matrix, target):
         else:
             j-=1
     return False
+    
+#1091. Shortest Path in Binary Matrix
+#In an N by N square grid, each cell is either empty (0) or blocked (1).
+#
+#A clear path from top-left to bottom-right has length k if and only if it is composed of cells 
+#C_1, C_2, ..., C_k such that:
+# Adjacent cells C_i and C_{i+1} are connected 8-directionally (ie., they are different and share an edge or corner)
+# C_1 is at location (0, 0) (ie. has value grid[0][0])
+# C_k is at location (N-1, N-1) (ie. has value grid[N-1][N-1])
+# If C_i is located at (r, c), then grid[r][c] is empty (ie. grid[r][c] == 0).
+#Return the length of the shortest such clear path from top-left to bottom-right.  If such a path does not exist, return -1
+def shortestPathBinaryMatrix(grid):
+    """
+    :type grid: List[List[int]]
+    :rtype: int
+    """
+    k=0
+    n = len(grid)-1
+    if grid[0][0]==1 or grid[n][n]==1:
+        return -1
+    visited = set([(0,0)])
+    current = set([(0,0)])
+    while current:
+        nextL = set()
+        k+=1
+        for node in current:
+            x,y = node
+            visited.add(node)
+            if (x,y)==(n,n):
+                return k
+            temp = [(x-1,y-1),(x-1,y),(x-1,y+1),
+                   (x,y-1),(x,y+1),
+                   (x+1,y-1),(x+1,y),(x+1,y+1)]
+            for t in temp:
+                if t[0]>=0 and t[1]>=0 and t[0]<=n and t[1]<=n and t not in visited and grid[t[0]][t[1]]==0:
+                    nextL.add(t)
+        current = nextL
+    return -1
+    
+#1090. Largest Values From Labels
+#We have a set of items: the i-th item has value values[i] and label labels[i].
+#
+#Then, we choose a subset S of these items, such that:
+#
+#|S| <= num_wanted
+#For every label L, the number of items in S with label L is <= use_limit.
+#Return the largest possible sum of the subset S.
+def largestValsFromLabels(values, labels, num_wanted, use_limit):
+    """
+    :type values: List[int]
+    :type labels: List[int]
+    :type num_wanted: int
+    :type use_limit: int
+    :rtype: int
+    """
+    d = {}
+    res = 0
+    labelUse = {}
+    for i in range(len(values)):
+        label = labels[i]
+        value = values[i]
+        if value not in d:
+            d[value] = {label:1}
+        else:
+            if label not in d[value]:
+                d[value][label]=0
+            d[value][label]+=1
+    myList = sorted(d)
+
+
+    while num_wanted:
+        if myList:
+            value = myList.pop(-1)
+            # get the labels that have this value
+            labels = d[value]
+            for label in labels:
+                labelCount = labels[label] # will have to check whether this label count cant be used and used how many times
+                # get the number of this label already used
+                if label not in labelUse:
+                    labelUse[label]=0
+                used = labelUse[label] 
+                if used==use_limit:
+                    pass # passed if already used to limit
+                # else, add to the minimum of (use_limit-used,num_wanted)
+                for i in range(min(use_limit-used,num_wanted,labelCount)):
+                    res+=value
+                    num_wanted-=1
+                    labelUse[label]+=1
+
+        else:
+            break
+
+    return res    
