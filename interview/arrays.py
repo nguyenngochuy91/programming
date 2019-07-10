@@ -959,3 +959,112 @@ def largestValsFromLabels(values, labels, num_wanted, use_limit):
             break
 
     return res    
+
+# qsort
+def quicksort(lst):
+    n = len(lst)
+    qsort(lst,0,n-1)
+def qsort(lst,low,high):
+    if low<high:
+        p = partition(lst, low, high)
+        qsort(lst,0,p-1)
+        qsort(lst,p+1,high)
+def partition(lst, lo, hi):
+    pivot = lst[hi]
+    i = lo
+    for j in range(lo,hi):
+        if lst[j]<pivot:
+            lst[i],lst[j]= lst[j],lst[i]
+            i+=1
+    lst[i], lst[hi] = lst[hi], lst[i]
+    return i
+    
+#You are given two strings s and t of the same length, consisting of uppercase English letters. 
+#Your task is to find the minimum number of "replacement operations" needed to get some anagram of the 
+#string t from the string s. A replacement operation is performed by picking exactly one character from the string s and replacing it by some other character.
+def createAnagram(s, t):
+    ds = {}
+    dt = {}
+    l = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    for letter in l:
+        ds[letter]=0
+        dt[letter]=0
+    for item in s:
+        ds[item]+=1
+    for item in t:
+        dt[item]+=1        
+    swap = 0 # swapping
+    leftOver = 0
+    for letter in l:
+        vs = ds[letter]
+        vt = dt[letter]
+        if vs==vt:
+            continue
+        elif vs<vt:
+            extra = vs-vt
+            if leftOver>=0:
+                swap+=min(leftOver,-extra)
+            leftOver+=extra
+        else:
+            extra= vs-vt 
+            if leftOver<=0: 
+                swap +=min(-leftOver,extra)
+            leftOver+=extra 
+    return swap
+
+#Given a string consisting of lowercase English letters, find the largest square number which 
+#can be obtained by reordering the string's characters and replacing them with any digits you need 
+#(leading zeros are not allowed) where same characters always map to the same digits and different characters always map to different digits.
+#
+#If there is no solution, return -1.
+def constructSquare(s):
+    v = len(s)
+    ds = {}
+    dv = {}
+    for l in s:
+        if l not in ds:
+            ds[l]=0
+        ds[l]+=1
+    for key in ds:
+        val = ds[key]
+        if val not in dv:
+            dv[val]=[]
+        dv[val].append(key)
+    if len(ds)>10:
+        return -1
+    if v ==1:
+        return 9
+    start = int((10**(v-1))**.5)
+    stop  = int((10**v)**.5)
+
+    for i in range(stop,start,-1):
+        i = i**2
+
+        # check if there is a valid mapping
+        num = str(i)
+        ds = {}
+        dn= {}
+        check = True
+        for l in num:
+            if l not in ds:
+                ds[l]=0
+            ds[l]+=1
+        for key in ds:
+            v = ds[key]
+            if v not in dn:
+                dn[v]=[]
+            dn[v].append(key)  
+        if len(dn)!=len(dv):
+            continue
+        for key in dn:
+            if key not in dv:
+                check = False
+                break
+            else:
+                if len(dv[key])!=len(dn[key]):
+                    check = False 
+                    break 
+        if check:
+            return i
+            
+    return -1
