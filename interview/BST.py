@@ -57,11 +57,12 @@ nums = [1,2,3,4,5,6,7,8,9,0,10]
 # given an sorted arr with duplication, return the smallest index of a given number of -1
 def binarySearchDupLeft(arr,num):
     start,stop = 0,len(arr)-1
-    output = []
+
     while start<=stop: # has to <= else it wont find all
         mid = (start+stop)//2
+        print (start,mid,stop)
         if arr[mid]==num:
-            output.append(mid)
+            start = mid
             stop = mid-1
         elif arr[mid]<num:
             start = mid+1
@@ -69,6 +70,6 @@ def binarySearchDupLeft(arr,num):
             stop = mid-1
     # if not found, then basically, start points to the smallest index that is bigger
     # stop points to the largest index that is smaller
-    return output  
-arr = [1,2,3,3,3,4,5,5,6,6,6,6,6]
+    return -1  
+arr = [6,6,6,6,6,6,6,6,6,6]
 print (binarySearchDupLeft(arr,6))
