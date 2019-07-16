@@ -19,7 +19,12 @@ def binarySearch(arr,num):
     # if not found, then basically, start points to the smallest index that is bigger
     # stop points to the largest index that is smaller
     return -1  
-    
+
+# second version of binarySearch that has l<r, and r = mid
+def binarySearchVariant(arr,num):
+    start,stop = 0,len(arr)
+    while start < stop:
+        
 # normal binary search, given a sorted array, and a number, find the index of the number or the smallest index that is 
 # larger than the number
 def binarySearchSmallestLarger(arr,num):
