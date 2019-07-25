@@ -1149,3 +1149,240 @@ def shortestAlternatingPaths(n, red_edges, blue_edges):
         else:
             output.append(val)
     return output
+
+# countIsland
+#You are given a binary matrix as an input. 
+#You want to return the number of islands in the binary matrix.  
+#You can think of the 0's as the ocean and the 1's as land.  
+#An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
+#
+# 
+#
+#Examples:
+#
+# 
+#
+## There are 6 islands in this matrix
+#{1, 1, 0, 0, 0},
+#{0, 1, 0, 0, 1},
+#{1, 0, 0, 1, 1},
+#{0, 0, 0, 0, 0},
+#{1, 0, 1, 0, 1}
+#
+# 
+#
+## There is 1 island in this matrix
+#{1, 1, 1, 1, 1},
+#{1, 1, 1, 1, 1},
+#{1, 1, 1, 1, 1}
+# allow modifing mattrix, runtime O(nm), space O(1)
+def countIslands(mat):
+    numIsland = 0
+    row       = len(mat)
+    col       = len(mat[0])
+    for i in range(row):
+        for j in range(col):
+            if mat[i][j] == 1:
+                queue = [(i,j)]
+                
+                mat[i][j] =0
+                numIsland+=1
+                while queue:
+                    currentNode            = queue.pop()
+                    currentRow,currentCol  = currentNode 
+                    potentialNeighbor = [(currentRow+1,currentCol),(currentRow,currentCol+1),(currentRow-1,currentCol),(currentRow,currentCol-1)]
+                    for potential in potentialNeighbor:
+                        x,y = potential
+                        if x>=0 and x<row and y>=0 and y<col:
+                            if  mat[x][y]==1:
+                                mat[x][y]=0
+                                queue.append((x,y))
+    return numIsland   
+# not allowing modifying matrix, runtime O(nm),space O(nm)
+def countIsLandHashMap(mat):
+    numIsland = 0
+    row       = len(mat)
+    col       = len(mat[0])
+    visited   = set()
+    for i in range(row):
+        for j in range(col):
+            if mat[i][j] == 1 and (i,j) not in visited:
+                queue = [(i,j)]
+                visited.add((i,j))
+                mat[i][j] =0
+                numIsland+=1
+                while queue:
+                    currentNode            = queue.pop()
+                    currentRow,currentCol  = currentNode 
+                    potentialNeighbor = [(currentRow+1,currentCol),(currentRow,currentCol+1),(currentRow-1,currentCol),(currentRow,currentCol-1)]
+                    for potential in potentialNeighbor:
+                        x,y = potential
+                        if x>=0 and x<row and y>=0 and y<col:
+                            if  mat[x][y]==1 and (x,y) not in visited:
+                                mat[x][y]=0
+                                queue.append((x,y))
+    return numIsland   
+# not allowing modifying matrix, runtime O(n^2m),space O(n)
+def countIsLandVariant(mat):
+    row             = len(mat)
+    col             = len(mat[0])
+    lastRow         = []
+    numIsland       = 0
+    for i in range(row):
+        currentRow = []
+        count      = 0
+        for j in range(col):
+            if mat[i][j] ==1:
+                if count ==0:
+                    start = j
+                count+=1
+            else:
+                if count>0:
+                    stop = j-1
+                    currentRow.append((start,stop))
+                    count = 0
+        if count>0:
+            currentRow.append((start,col-1))
+        print (mat[i])
+        intersectedIsland = findIntersect(lastRow,currentRow)
+        numIsland +=intersectedIsland
+        lastRow = currentRow
+        print ("numIsland",numIsland)
+    return numIsland       
+# helper function, given lastRow, and currentRow,determin how many island should we add
+# time O(n)
+def findIntersect(lastRow,currentRow):
+    print ("lastRow",lastRow)
+    print ("currentRow",currentRow)
+    if not lastRow:
+        return len(currentRow)
+    if not currentRow:
+        return 0
+    output = []
+    i,j = 0,0
+    # set currentInterval as empty
+    currentInterval = []
+    countNewInterval = 0
+    output = []
+    while i<len(lastRow) and j <len(currentRow):
+        lastRowInterval = lastRow[i]
+        currentRowInterval = currentRow[j]
+#        print ("lastRowInterval:",lastRowInterval)
+#        print ("currentRowInterval",currentRowInterval)
+#        print ("currentInterval",currentInterval)
+#        print ("output",output)
+        # check if they intersec
+        if lastRowInterval[0]>currentRowInterval[1] or lastRowInterval[1]<currentRowInterval[0]:
+            # this means those 2 dont intersect, we only need to check if our currentInterval intersect any of them
+            # and we know that our currentInterval can only intersect at most 1 of those 2 intervals
+            if currentInterval: # if our currentInterval is not empty, basically only if the previous are merged
+                if currentInterval[0]>lastRowInterval[1] or currentInterval[1]<lastRowInterval[0]: # means current and lastRow not itnersect
+                    if currentInterval[0]>currentRowInterval[1] or currentInterval[1]<currentRowInterval[0]:
+                        # it means we can count of currentInterval as a non intersecting to the rest
+                        output.append(currentInterval)
+                        # we also append the interval that is smaller of the lastRowInterval and currentRowInterval
+                        if lastRowInterval[0]<currentRowInterval[0]:
+                            output.append(lastRowInterval)
+                            # set our currentInterval equal to currentRowInterval
+                            currentInterval = []
+                            i+=1
+                        else:
+                            output.append(currentRowInterval)
+                            currentInterval = []
+                            j+=1
+                        countNewInterval+=2
+                    else:
+                        # we merge currentInterval with currentRowInterval
+                        currentInterval = [min(currentInterval[0],currentRowInterval[0]),max(currentInterval[1],currentRowInterval[1])]
+                        countNewInterval+=1
+                        output.append(currentInterval)
+                        currentInterval = []
+                        j+=1
+                else:
+                    # we merge currentInterval with lastRowInterval
+                    currentInterval = [min(currentInterval[0],lastRowInterval[0]),max(currentInterval[1],lastRowInterval[1])]
+                    countNewInterval+=1
+                    output.append(currentInterval)
+                    currentInterval = []
+                    i+=1
+            # if our currentInterval is empty
+            else:
+                if lastRowInterval[0]<currentRowInterval[0]:
+                    output.append(lastRowInterval)
+                    # set our currentInterval equal to currentRowInterval
+                    currentInterval = []
+                    
+                else:
+                    output.append(currentRowInterval)
+                    currentInterval = lastRowInterval   
+        else: # they intersect, create a merge interval
+            mergeInterval = [min(currentRowInterval[0],lastRowInterval[0]),max(currentRowInterval[1],lastRowInterval[1])]
+            
+            # check if this merge intersect with out currentInterval
+            if not currentInterval:
+                currentInterval = mergeInterval
+            else:
+                if currentInterval[0]>mergeInterval[1] or currentInterval[1]<mergeInterval[0]:
+                    # they dont intersect
+                    countNewInterval+=1
+                    output.append(currentInterval)
+                    currentInterval = mergeInterval
+                    
+                else:
+                    # merge all of them
+                    currentInterval = [min(currentInterval[0],mergeInterval[0]),max(currentInterval[1],mergeInterval[1])]
+            i+=1
+            j+=1
+#        print ("currentInterval after loop",currentInterval)
+    # if we iterate through one of our list but not both
+    if i <len(lastRow):
+        if not currentInterval:
+            output.extend(lastRow[i:])
+            countNewInterval+=len(lastRow)-i
+        else:
+            for interval in lastRow[i:]:
+                
+                if interval[1]<currentInterval[0]:
+                    output.append(interval)
+                    countNewInterval+=1
+                elif interval[0]>currentInterval[1]:
+                    output.append(currentInterval)
+                    countNewInterval+=1
+                    currentInterval = interval
+                else: # they intersect
+                    currentInterval =  [min(currentInterval[0],interval[0]),max(currentInterval[1],interval[1])]
+            output.append(currentInterval)
+            countNewInterval+=1
+    if j <len(currentRow):
+        if not currentInterval:
+            output.extend(currentRow[j:])
+            countNewInterval+=len(currentRow)-j
+        else:
+            for interval in currentRow[j:]:
+                if interval[1]<currentInterval[0]:
+                    output.append(interval)
+                    countNewInterval+=1
+                elif interval[0]>currentInterval[1]:
+                    output.append(currentInterval)
+                    countNewInterval+=1
+                    currentInterval = interval
+                else: # they intersect
+                    currentInterval =  [min(currentInterval[0],interval[0]),max(currentInterval[1],interval[1])]
+            output.append(currentInterval)
+            countNewInterval+=1
+    print ("output",output)
+    return countNewInterval    - len(lastRow)      
+                
+def test():
+#    inp = [[1, 1, 0, 0, 0],              
+#           [0, 1, 0, 0, 1],
+#           [1, 0, 0, 1, 1],
+#           [0, 0, 0, 0, 0],
+#           [1, 0, 1, 0, 1]]
+#    print ("Should have 6")
+#    print ("Actually have "+str(countIsLandVariant(inp)))
+    lastRow= [(1, 1), (4, 4)]
+    currentRow= [(0, 0), (3, 4)]
+
+    print(findIntersect(lastRow,currentRow))
+test()
