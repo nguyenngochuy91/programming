@@ -1381,16 +1381,16 @@ def findIntersect(lastRow,currentRow):
 #    print ("final result:",output)
     return countNewInterval    - len(lastRow)      
                 
-def test():
-    inp = [[1, 1, 0, 0, 0],              
-           [0, 1, 1, 1, 1],
-           [1, 0, 0, 1, 1],
-           [0, 0, 0, 0, 0],
-           [1, 0, 1, 0, 1]]
-    print ("Should have 5")
-    print ("Actually have "+str(countIsLandVariant(inp)))
-#    lastRow= [(1, 1), (4, 4)]
-#    currentRow= [(0, 0), (3, 4)]
-#
-#    print(findIntersect(lastRow,currentRow))
-test()
+#def test():
+#    inp = [[1, 1, 0, 0, 0],              
+#           [0, 1, 1, 1, 1],
+#           [1, 0, 0, 1, 1],
+#           [0, 0, 0, 0, 0],
+#           [1, 0, 1, 0, 1]]
+#    print ("Should have 5")
+#    print ("Actually have "+str(countIsLandVariant(inp)))
+##    lastRow= [(1, 1), (4, 4)]
+##    currentRow= [(0, 0), (3, 4)]
+##
+##    print(findIntersect(lastRow,currentRow))
+#test()
