@@ -1243,17 +1243,17 @@ def countIsLandVariant(mat):
                     count = 0
         if count>0:
             currentRow.append((start,col-1))
-        print (mat[i])
+#        print (mat[i])
         intersectedIsland = findIntersect(lastRow,currentRow)
         numIsland +=intersectedIsland
         lastRow = currentRow
-        print ("numIsland",numIsland)
+#        print ("numIsland",numIsland)
     return numIsland       
 # helper function, given lastRow, and currentRow,determin how many island should we add
 # time O(n)
 def findIntersect(lastRow,currentRow):
-    print ("lastRow",lastRow)
-    print ("currentRow",currentRow)
+#    print ("lastRow",lastRow)
+#    print ("currentRow",currentRow)
     if not lastRow:
         return len(currentRow)
     if not currentRow:
@@ -1293,14 +1293,14 @@ def findIntersect(lastRow,currentRow):
                         countNewInterval+=2
                     else:
                         # we merge currentInterval with currentRowInterval
-                        currentInterval = [min(currentInterval[0],currentRowInterval[0]),max(currentInterval[1],currentRowInterval[1])]
+                        currentInterval = (min(currentInterval[0],currentRowInterval[0]),max(currentInterval[1],currentRowInterval[1]))
                         countNewInterval+=1
                         output.append(currentInterval)
                         currentInterval = []
                         j+=1
                 else:
                     # we merge currentInterval with lastRowInterval
-                    currentInterval = [min(currentInterval[0],lastRowInterval[0]),max(currentInterval[1],lastRowInterval[1])]
+                    currentInterval = (min(currentInterval[0],lastRowInterval[0]),max(currentInterval[1],lastRowInterval[1]))
                     countNewInterval+=1
                     output.append(currentInterval)
                     currentInterval = []
@@ -1311,12 +1311,15 @@ def findIntersect(lastRow,currentRow):
                     output.append(lastRowInterval)
                     # set our currentInterval equal to currentRowInterval
                     currentInterval = []
-                    
+                    i+=1
+                    countNewInterval+=1
                 else:
                     output.append(currentRowInterval)
-                    currentInterval = lastRowInterval   
+                    currentInterval = []   
+                    j+=1
+                    countNewInterval+=1
         else: # they intersect, create a merge interval
-            mergeInterval = [min(currentRowInterval[0],lastRowInterval[0]),max(currentRowInterval[1],lastRowInterval[1])]
+            mergeInterval = (min(currentRowInterval[0],lastRowInterval[0]),max(currentRowInterval[1],lastRowInterval[1]))
             
             # check if this merge intersect with out currentInterval
             if not currentInterval:
@@ -1330,9 +1333,10 @@ def findIntersect(lastRow,currentRow):
                     
                 else:
                     # merge all of them
-                    currentInterval = [min(currentInterval[0],mergeInterval[0]),max(currentInterval[1],mergeInterval[1])]
+                    currentInterval = (min(currentInterval[0],mergeInterval[0]),max(currentInterval[1],mergeInterval[1]))
             i+=1
             j+=1
+        print ()
 #        print ("currentInterval after loop",currentInterval)
     # if we iterate through one of our list but not both
     if i <len(lastRow):
@@ -1350,10 +1354,10 @@ def findIntersect(lastRow,currentRow):
                     countNewInterval+=1
                     currentInterval = interval
                 else: # they intersect
-                    currentInterval =  [min(currentInterval[0],interval[0]),max(currentInterval[1],interval[1])]
+                    currentInterval = (min(currentInterval[0],interval[0]),max(currentInterval[1],interval[1]))
             output.append(currentInterval)
             countNewInterval+=1
-    if j <len(currentRow):
+    elif j <len(currentRow):
         if not currentInterval:
             output.extend(currentRow[j:])
             countNewInterval+=len(currentRow)-j
@@ -1367,22 +1371,26 @@ def findIntersect(lastRow,currentRow):
                     countNewInterval+=1
                     currentInterval = interval
                 else: # they intersect
-                    currentInterval =  [min(currentInterval[0],interval[0]),max(currentInterval[1],interval[1])]
+                    currentInterval =  (min(currentInterval[0],interval[0]),max(currentInterval[1],interval[1]))
             output.append(currentInterval)
             countNewInterval+=1
-    print ("output",output)
+    else:
+        if currentInterval:
+            output.append(currentInterval)
+            countNewInterval+=1
+#    print ("final result:",output)
     return countNewInterval    - len(lastRow)      
                 
 def test():
-#    inp = [[1, 1, 0, 0, 0],              
-#           [0, 1, 0, 0, 1],
-#           [1, 0, 0, 1, 1],
-#           [0, 0, 0, 0, 0],
-#           [1, 0, 1, 0, 1]]
-#    print ("Should have 6")
-#    print ("Actually have "+str(countIsLandVariant(inp)))
-    lastRow= [(1, 1), (4, 4)]
-    currentRow= [(0, 0), (3, 4)]
-
-    print(findIntersect(lastRow,currentRow))
+    inp = [[1, 1, 0, 0, 0],              
+           [0, 1, 1, 1, 1],
+           [1, 0, 0, 1, 1],
+           [0, 0, 0, 0, 0],
+           [1, 0, 1, 0, 1]]
+    print ("Should have 5")
+    print ("Actually have "+str(countIsLandVariant(inp)))
+#    lastRow= [(1, 1), (4, 4)]
+#    currentRow= [(0, 0), (3, 4)]
+#
+#    print(findIntersect(lastRow,currentRow))
 test()
