@@ -22,3 +22,52 @@ def binarySearch(arr,num):
     if arr[stop] == num: 
         return stop
     return -1
+# given an array and target number, find the range of index that is equal to the target, 
+# if target not in arrays, return [-1,-1]
+def searchRange(nums, target):
+    # Write your code here
+    def searchLeft(nums,target):
+        start,stop = 0 , len(nums)-1
+        while start+1<stop:
+            mid = (start+stop)//2
+            if nums[mid]>=target: 
+                stop = mid 
+            else:
+                start = mid
+        if nums[start]==target:
+            return start
+        if nums[stop]== target:
+            return stop 
+        return -1 
+    left = searchLeft(nums,target)
+    if left ==-1:
+        return [-1,-1]
+    def searchRight(nums,target):
+        start,stop = 0 , len(nums)-1
+        while start+1<stop:
+            mid = (start+stop)//2
+            if nums[mid]<=target: 
+                start = mid 
+            else:
+                stop = mid
+        if nums[stop]==target:
+            return stop
+        if nums[start]== target:
+            return start 
+    right = searchRight(nums,target)
+    return [left,right] 
+# find peak in an array, could have multiple mid
+def getPeak(nums):
+    # Write your code here
+    start ,stop =0,len(nums)-1 
+    while start+1<stop:
+        mid = (start+stop)//2
+        if nums[mid]>nums[mid-1] and nums[mid]>nums[mid+1]:
+            return mid
+        elif nums[mid]<nums[mid-1]:
+            stop = mid
+        elif nums[mid]<nums[mid+1]: 
+            start = mid
+    if nums[start]>=nums[stop]:
+        return start
+    return stop
