@@ -1410,10 +1410,96 @@ def maximalSquare(self, matrix):
     output = 0
     for i in range(row-1,-1,-1):
         for j in range(col-1,-1,-1):
-            if i == row-1:
-
             if matrix[i][j]=="1":
                 val= min(arr[i][j+1],arr[i+1][j],arr[i+1][j+1])+1
                 arr[i][j]=val
                 output   = max(val,output)
     return output**2
+
+#CTCI Page 68: Print all positive integer solutions to the equation a3 + b3 = c3 + d3 where a, b, c, and d are integers between 1 and 1000
+def findCubeSolution():
+    d = {}
+    for i in range(1,1001):
+        for j in range(i+1,1001):
+            v = i**3+j**3
+            if v not in d:
+                d[v] =[]
+            d[v].append((i,j))
+    for key in d:
+        numPos = len(d[key])
+        if numPos>=2:
+            for i in range(numPos-1):
+                for j in range(i+1,numPos):
+                    print (d[key][i],d[key][j])
+#18. 4Sum
+#Given an array nums of n integers and an integer target, are there elements 
+#a, b, c, and d in nums such that a + b + c + d = target? Find all unique 
+#quadruplets in the array which gives the sum of target.\
+def fourSum(nums, target):
+    dic= {}
+    for i in range(len(nums)-1):
+        for j in range(i+1,len(nums)):
+            v = nums[i]+nums[j]
+            if v not in dic:
+                dic[v]= []
+            dic[v].append([i,j])
+    output = {}
+    for key in dic:
+        if key*2==target:
+            arr = dic[key]
+            for i in range(len(arr)-1):
+                for j in range(i+1,len(arr)):
+                    a,b = arr[i]
+                    c,d = arr[j]
+                    # check if there are any same index (a,b) and (c,d)
+                    index= set([a,b,c,d])
+                    if len(index)==4:
+                        temp = sorted([nums[a],nums[b],nums[c],nums[d]])
+                        output[tuple(temp)]=1
+        else:
+            val = target -key
+            if val in dic:
+                arr1 = dic[key]
+                arr2 = dic[val]
+                for i in range(len(arr1)):
+                    for j in range(len(arr2)):
+                        a,b = arr1[i]
+                        c,d = arr2[j]
+                        # check if there are any same index (a,b) and (c,d)
+                        index= set([a,b,c,d])
+                        if len(index)==4:
+                            temp = sorted([nums[a],nums[b],nums[c],nums[d]])
+                            output[tuple(temp)]=1
+    res = []
+    for item in output:
+        res.append(list(item))
+    return res
+#875. Koko Eating Bananas
+#Koko loves to eat bananas.  There are N piles of bananas, the i-th pile has piles[i] bananas.  
+#The guards have gone and will come back in H hours.
+#
+#Koko can decide her bananas-per-hour eating speed of K.  Each hour, she chooses some pile of bananas, 
+#and eats K bananas from that pile.  If the pile has less than K bananas, she eats all of them instead, 
+#and won't eat any more bananas during this hour.
+#
+#Koko likes to eat slowly, but still wants to finish eating all the bananas before the guards come back.
+#
+#Return the minimum integer K such that she can eat all the bananas within H hours.
+def minEatingSpeed(piles, H):
+    def check(piles,K,H):
+        hour = 0
+        for p in piles:
+            hour+=p//K
+            if p%K:
+                hour+=1
+        return hour<=H
+    start,stop = 0, max(piles)
+    while start+1<stop:
+        mid = (start+stop)//2
+        if check(piles,mid,H):
+            stop = mid
+        else:
+            start = mid
+    if check(piles,stop,H):
+        return stop
+    return start
