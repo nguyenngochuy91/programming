@@ -55,8 +55,9 @@ def normalMaxSub(arr):
 # 76. Minimum Window Substrin
 #    Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
 def findSubString(str1,str2):
-    if len(str2)==1:
-        return str2 in str1
+    if str2 in str1:
+        return str2
+
     d = {}
     for l in str2:
         if l not in d:
@@ -76,7 +77,7 @@ def findSubString(str1,str2):
             hitting+=1
 #        print (currentD,hitting)
         # if we hit the form, we will retract just like our template, we retract as long as our hitting is still equal to len(d)
-        while hitting ==len(d) and start+1<stop:
+        while hitting ==len(d) and start<stop:
 #            print ("inner loop")
             # we check if our current is the smallest string
             if not output:
@@ -86,7 +87,7 @@ def findSubString(str1,str2):
                 if (stop-start+1)<len(output):
                     output = str1[start:stop+1]
 #                    print (88,output)
-        
+
             # get the character on start
             leftMostLetter =str1[start]
 #            print ("leftMostLetter",leftMostLetter)
@@ -95,12 +96,12 @@ def findSubString(str1,str2):
 #            print (currentD)
             if leftMostLetter in d and currentD[leftMostLetter]<d[leftMostLetter]:
                 hitting-=1
-            
+
             # increment our start
             start+=1
         # increment our stop
         stop+=1  
-            
+
     return output
 #239. Sliding Window Maximum
 #Given an array nums, there is a sliding window of size k which is moving from the very 
