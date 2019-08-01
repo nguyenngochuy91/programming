@@ -4,14 +4,49 @@ Created on Fri May 17 17:05:06 2019
 
 @author: huyn
 """
-
+# template
+# Base Case
+# Recursive Call
+#   Request (Top Down)
+#   Retrieve (Bottom Up)
 # Definition for a binary tree node.
 class TreeNode(object):
-    def __init__(self, x):
+    def __init__(self, x,left=None,right=None):
         self.val = x
-        self.left = None
-        self.right = None
-         
+        self.left = left
+        self.right = right
+        
+    def inTraversal(self,root):
+        if not root:
+            return 
+        else:
+            self.inTraversal(root.left)
+            print (root.val)
+            self.inTraversal(root.right)
+    def maxDepth(self):
+        if not self:
+            return 0
+            left = self.maxDepth(self.left)
+            right = self.maxDepth(self.right)
+            return max(left,right)+1
+    def isBalanced(self):
+        if not self:
+            return True,0
+            leftInfo = self.isBalanced(self.left)
+            leftIsGood, leftHeight = leftInfo[0],leftInfo+1
+            rightInfo = self.isBalanced(self.left)
+            rightIsGood, rightHeight = rightInfo[0],rightInfo+1
+            
+            return abs(leftHeight-rightHeight)<=1 and leftIsGood and rightIsGood
+
+a = TreeNode(3)
+b = TreeNode(4)
+c = TreeNode(5,a,b)
+d = TreeNode(6)
+e = TreeNode(7)
+f = TreeNode(8,d,e)
+g = TreeNode(10,c,f)
+g.inTraversal(g)
 #998. Maximum Binary Tree II998. Maximum Binary Tree II
 #
 #We are given the root node of a maximum tree: a tree where every node has a value greater than any other value in its subtree.
@@ -83,7 +118,6 @@ class CBTInserter:
                         nextLevel.append(node.left)
                         nextLevel.append(node.right)
             level= nextLevel
-            
 
     def get_root(self) -> TreeNode:
         return self.root
@@ -316,3 +350,10 @@ def assignMinMax(root):
             maxL,minL = root.left.max, root.left.min
             root.max = max(root.val,maxL)
             root.min = min(root.val,minL)
+# given a binary tree, find the lowest common ancestors of 2 node
+def lowestCommonAcnestor(root,node1,node2):
+    
+    return None
+# given a binary tree, find the lowest common ancestors
+def lowestCommonAcnestorBST(root,node1,node2):
+    return None

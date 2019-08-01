@@ -1474,32 +1474,23 @@ def fourSum(nums, target):
     for item in output:
         res.append(list(item))
     return res
-#875. Koko Eating Bananas
-#Koko loves to eat bananas.  There are N piles of bananas, the i-th pile has piles[i] bananas.  
-#The guards have gone and will come back in H hours.
-#
-#Koko can decide her bananas-per-hour eating speed of K.  Each hour, she chooses some pile of bananas, 
-#and eats K bananas from that pile.  If the pile has less than K bananas, she eats all of them instead, 
-#and won't eat any more bananas during this hour.
-#
-#Koko likes to eat slowly, but still wants to finish eating all the bananas before the guards come back.
-#
-#Return the minimum integer K such that she can eat all the bananas within H hours.
-def minEatingSpeed(piles, H):
-    def check(piles,K,H):
-        hour = 0
-        for p in piles:
-            hour+=p//K
-            if p%K:
-                hour+=1
-        return hour<=H
-    start,stop = 0, max(piles)
-    while start+1<stop:
-        mid = (start+stop)//2
-        if check(piles,mid,H):
-            stop = mid
-        else:
-            start = mid
-    if check(piles,stop,H):
-        return stop
-    return start
+#https://www.hackerrank.com/challenges/queens-attack-2/problem
+def queensAttack(n, k, r_q, c_q, obstacles):
+    dictionary= {} # store info of the range of the 4 lines goes through the queen is allow to travel
+    dictionary["H"]= [0,n-1]
+    dictionary["V"]= [0,n-1]
+    # we basically use the row for indication
+    # left diagonal
+    decrease = min(r_q,c_q)
+    increase = min(n-r_q,n-c_q-1)
+    dictionary["LD"]=[r_q-decrease,r_q+increase]
+    # right diagonal
+    decrease = min(r_q,n-c_q-1)
+    increase = min (c_q,n-r_q-1)
+    dictionary["RD"]=[r_q-decrease,r_q+increase]
+
+    
+    return None
+n, k, r_q, c_q, obstacles= 4 ,0, 4 ,4 ,[]
+n, k, r_q, c_q, obstacles=5, 3, 4 ,3, [[5, 5], [4, 2], [2, 3]]
+n, k, r_q, c_q, obstacles=1, 0, 1, 1, []

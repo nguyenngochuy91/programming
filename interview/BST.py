@@ -95,3 +95,4 @@ def binarySearchDupLeft(arr,num):
     return -1  
 #arr = [6,6,6,6,6,6,6,6,6,6]
 #print (binarySearchDupLeft(arr,6))
+    
