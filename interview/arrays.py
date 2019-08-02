@@ -1476,8 +1476,9 @@ def fourSum(nums, target):
     return res
 #https://www.hackerrank.com/challenges/queens-attack-2/problem
 def queensAttack(n, k, r_q, c_q, obstacles):
-    r_q-=1
+    r_q=n-r_q
     c_q-=1
+#    print (r_q,c_q)
     dictionary= {} # store info of the range of the 4 lines goes through the queen is allow to travel
     dictionary["H"]= [-1,n]
     dictionary["V"]= [-1,n]
@@ -1485,17 +1486,19 @@ def queensAttack(n, k, r_q, c_q, obstacles):
     # left diagonal
     decrease = min(r_q,c_q)
     increase = min(n-r_q,n-c_q-1)
-    dictionary["LD"]=[r_q-decrease-1,r_q+increase+1]
+#    print (decrease,increase)
+    dictionary["LD"]=[max(r_q-decrease-1,-1),min(r_q+increase+1,n)]
     # right diagonal
     decrease = min(r_q,n-c_q-1)
     increase = min (c_q,n-r_q-1)
-    dictionary["RD"]=[r_q-decrease-1,r_q+increase+1]
+    dictionary["RD"]=[max(r_q-decrease-1,-1),min(r_q+increase+1,n)]
     for key in dictionary:
         print (key,dictionary[key])
     for obstacle in obstacles:
         x,y = obstacle
-        x-=1
+        x=n-x
         y-=1
+#        print (x,y)
         if x== r_q:
             if y>c_q:
                 dictionary["V"][1] = min( dictionary["V"][1] ,y)
@@ -1512,7 +1515,7 @@ def queensAttack(n, k, r_q, c_q, obstacles):
                     dictionary["LD"][1]= min(dictionary["LD"][1],x)
                 else:
                     dictionary["LD"][0]= max(dictionary["LD"][0],x)
-            else:
+            elif (x-r_q)/(y-c_q)==-1:
                 if x>r_q:
                     dictionary["RD"][1]= min(dictionary["RD"][1],x)
                 else:
@@ -1520,13 +1523,21 @@ def queensAttack(n, k, r_q, c_q, obstacles):
     c = 0
     for key in dictionary:
         start,stop = dictionary[key]
-        if start!=stop:
+        print (key,start,stop)
+        if start<stop:
             c+=stop-start-2
         print (c)
+#    print ("final c:",c)
     return c
+n, k, r_q, c_q, obstacles= 8 ,0, 5 ,4 ,[]
+c = queensAttack(n, k, r_q, c_q, obstacles)
+print ("should be:",27)
 n, k, r_q, c_q, obstacles= 4 ,0, 4 ,4 ,[]
 c = queensAttack(n, k, r_q, c_q, obstacles)
-#n, k, r_q, c_q, obstacles=5, 3, 4 ,3, [[5, 5], [4, 2], [2, 3]]
-#c = queensAttack(n, k, r_q, c_q, obstacles)
+print ("should be:",9)
+n, k, r_q, c_q, obstacles=5, 3, 4 ,3, [[5, 5], [4, 2], [2, 3]]
+c = queensAttack(n, k, r_q, c_q, obstacles)
+print ("should be:",10)
 n, k, r_q, c_q, obstacles=1, 0, 1, 1, []
 c = queensAttack(n, k, r_q, c_q, obstacles)
+print ("should be:",0)
