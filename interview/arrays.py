@@ -5,6 +5,7 @@ Created on Fri Jan  4 19:43:28 2019
 @author: Huy Nguyen
 """
 import heapq
+import math
 # finding the maximum sum of the contiguous sub-array of a given array
 def findContiguousMaxSum(array):
     output = 0
@@ -1529,15 +1530,75 @@ def queensAttack(n, k, r_q, c_q, obstacles):
         print (c)
 #    print ("final c:",c)
     return c
-n, k, r_q, c_q, obstacles= 8 ,0, 5 ,4 ,[]
-c = queensAttack(n, k, r_q, c_q, obstacles)
-print ("should be:",27)
-n, k, r_q, c_q, obstacles= 4 ,0, 4 ,4 ,[]
-c = queensAttack(n, k, r_q, c_q, obstacles)
-print ("should be:",9)
-n, k, r_q, c_q, obstacles=5, 3, 4 ,3, [[5, 5], [4, 2], [2, 3]]
-c = queensAttack(n, k, r_q, c_q, obstacles)
-print ("should be:",10)
-n, k, r_q, c_q, obstacles=1, 0, 1, 1, []
-c = queensAttack(n, k, r_q, c_q, obstacles)
-print ("should be:",0)
+#n, k, r_q, c_q, obstacles= 8 ,0, 5 ,4 ,[]
+#c = queensAttack(n, k, r_q, c_q, obstacles)
+#print ("should be:",27)
+#n, k, r_q, c_q, obstacles= 4 ,0, 4 ,4 ,[]
+#c = queensAttack(n, k, r_q, c_q, obstacles)
+#print ("should be:",9)
+#n, k, r_q, c_q, obstacles=5, 3, 4 ,3, [[5, 5], [4, 2], [2, 3]]
+#c = queensAttack(n, k, r_q, c_q, obstacles)
+#print ("should be:",10)
+#n, k, r_q, c_q, obstacles=1, 0, 1, 1, []
+#c = queensAttack(n, k, r_q, c_q, obstacles)
+#print ("should be:",0)
+    
+    
+#https://www.hackerrank.com/challenges/acm-icpc-team/problem?h_r=next-challenge&h_v=zen
+def acmTeam(topic):
+    row = len(topic)
+    col = len(topic[0])
+    d   = {}
+    for r in range(row): # for each student
+        d[r]= set()
+        for c in range(col): # get the topic
+            if topic[r][c]=="1":
+                d[r].add(c)
+    currentMax = 0
+    numTeam = 0
+    for i in range(row-1):
+        for j in range(i+1,row):
+            topicSet = d[i].union(d[j])
+            print (i,j,topicSet)
+            if len(topicSet)>currentMax:
+                currentMax = len(topicSet)
+                numTeam=1
+            elif len(topicSet)==currentMax:
+                numTeam+=1
+    return currentMax,numTeam
+
+#topic = ["10101","11100","11010","00101"]
+#currentMax,numTeam = acmTeam(topic)
+
+
+#https://www.hackerrank.com/challenges/encryption/problem
+def encryption(s):
+    s = s.replace(" ","")
+    n = len(s)
+    v = (n**.5)
+    b = math.ceil(v)
+    a = math.floor(v)
+    if a*b<n:
+        a=b
+#    print ("a :{} b :{}".format(a,b))
+#    print ("s",s)
+    arr = []
+    for c in range(b):
+        string =""
+        for r in range(a):
+            try:
+                string+=s[c+r*b]
+            except:
+                break
+        arr.append(string)
+    return " ".join(arr)
+
+s = "haveaniceday"
+print ("Should have:","hae and via ecy")
+encryption(s)
+s ="feedthedog"
+print ("Should have:","fto ehg ee dd")
+encryption(s)
+s = "chillout"
+print ("Should have:","clu hlt io")
+encryption(s)
