@@ -1593,12 +1593,39 @@ def encryption(s):
         arr.append(string)
     return " ".join(arr)
 
-s = "haveaniceday"
-print ("Should have:","hae and via ecy")
-encryption(s)
-s ="feedthedog"
-print ("Should have:","fto ehg ee dd")
-encryption(s)
-s = "chillout"
-print ("Should have:","clu hlt io")
-encryption(s)
+#s = "haveaniceday"
+#print ("Should have:","hae and via ecy")
+#encryption(s)
+#s ="feedthedog"
+#print ("Should have:","fto ehg ee dd")
+#encryption(s)
+#s = "chillout"
+#print ("Should have:","clu hlt io")
+#encryption(s)
+
+
+#https://www.hackerrank.com/challenges/non-divisible-subset/problem
+def nonDivisibleSubset(k, s):
+    # Write your code here
+    d = {}
+    for i in range(k):
+        d[i] =0
+    for item in s:
+        d[item%k]+=1
+#    print (d)
+    count = 0
+    for i in range(k//2+1):
+        if i==0 or i*2==k:
+            if d[i]>0:
+                count+=1
+        else:
+            v1 = d[i]
+            v2 = d[k-i]
+            count+=max(v1,v2)
+#            print (i,v1,v2)
+    return count
+    
+
+#https://www.hackerrank.com/challenges/bigger-is-greater/problem?h_r=next-challenge&h_v=zen
+def biggerIsGreater(w):
+    return None
