@@ -357,3 +357,54 @@ def lowestCommonAcnestor(root,node1,node2):
 # given a binary tree, find the lowest common ancestors
 def lowestCommonAcnestorBST(root,node1,node2):
     return None
+#1145. Binary Tree Coloring Game
+def btreeGameWinningMove(root: TreeNode, n: int, x: int) -> bool:
+    def assignSum(root,parent):
+        if root:
+            if not root.left and not root.right:
+                root.sum = 1
+            elif root.left and not root.right:
+                node = assignSum(root.left,root)
+                if node:
+                    return node
+                root.sum = 1+root.left.sum
+            elif root.right and not root.left:
+                node =assignSum(root.right,root)
+                if node:
+                    return node
+                root.sum = 1+root.right.sum
+            else:
+                nodeLeft= assignSum(root.left,root)
+                nodeRight= assignSum(root.right,root)
+                if nodeLeft:
+                    return nodeLeft
+                if nodeRight:
+                    return nodeRight
+                root.sum = 1+root.left.sum+root.right.sum
+            root.parent = parent
+            if root.val == x:
+                return root
+            else:
+                return None
+        
+    nodeX= assignSum(root,None)
+    total = n
+    if nodeX.left:
+        leftSum = nodeX.left.sum
+    else:
+        leftSum = 0
+    if nodeX.right:
+        rightSum = nodeX.right.sum
+    else:
+        rightSum = 0
+    if not leftSum and not rightSum:
+        return True
+    parentNode = nodeX.parent
+    if parentNode:
+        parentSum = total-nodeX.sum
+    else:
+        parentSum = 0
+#    print (parentSum,leftSum,rightSum)
+    if parentSum>(leftSum+rightSum) or leftSum>rightSum+parentSum or rightSum>leftSum+parentSum:
+        return True
+    return False

@@ -49,11 +49,11 @@ def binarySearchSmallestLarger1(arr,num):
         return -1
     return start
 arr1= [1,3,5,7,9,11]
-print (binarySearchSmallestLarger1(arr1,2),1)
-print (binarySearchSmallestLarger1(arr1,3),2)
-print (binarySearchSmallestLarger1(arr1,9),5)
-print (binarySearchSmallestLarger1(arr1,10),5)
-print (binarySearchSmallestLarger1(arr1,11),-1)
+#print (binarySearchSmallestLarger1(arr1,2),1)
+#print (binarySearchSmallestLarger1(arr1,3),2)
+#print (binarySearchSmallestLarger1(arr1,9),5)
+#print (binarySearchSmallestLarger1(arr1,10),5)
+#print (binarySearchSmallestLarger1(arr1,11),-1)
     
 # normal binary search, given a sorted array, and a number, find the index of the number or the largest index that is 
 # smaller than the number or the index that is equal to the number
@@ -95,4 +95,42 @@ def binarySearchDupLeft(arr,num):
     return -1  
 #arr = [6,6,6,6,6,6,6,6,6,6]
 #print (binarySearchDupLeft(arr,6))
+    
+#1146. Snapshot Array
+class SnapshotArray:
+
+    def __init__(self, length: int):
+        self.arr = {index:[[0,0]] for index in range(length)}
+        self.snapNum = -1
+    def set(self, index: int, val: int) -> None:
+        nextSnap = self.snapNum+1
+        # check if this is overide the currentSNap
+        if self.arr[index][-1][0]==nextSnap:
+            self.arr[index][-1][1] = val
+        else:
+            self.arr[index].append([nextSnap,val])
+
+    def snap(self) -> int:
+        self.snapNum+=1
+        return self.snapNum
+
+    def get(self, index: int, snap_id: int) -> int:
+        arr =self.arr[index]
+        # do a binary Search
+        start = 0
+        stop = len(arr)-1
+        while start+1<stop:
+            mid = (start+stop)//2
+            item = arr[mid]
+            currentSnap,value = item
+            if currentSnap==snap_id:
+                return value
+            elif currentSnap>snap_id:
+                stop = mid
+            else:
+                start = mid
+        if arr[stop][0]<=snap_id:
+            return arr[stop][1]
+        elif arr[start][0]<=snap_id:
+            return arr[start][1]
     

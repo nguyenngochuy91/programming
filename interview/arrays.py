@@ -6,6 +6,7 @@ Created on Fri Jan  4 19:43:28 2019
 """
 import heapq
 import math
+import typing
 # finding the maximum sum of the contiguous sub-array of a given array
 def findContiguousMaxSum(array):
     output = 0
@@ -1629,3 +1630,27 @@ def nonDivisibleSubset(k, s):
 #https://www.hackerrank.com/challenges/bigger-is-greater/problem?h_r=next-challenge&h_v=zen
 def biggerIsGreater(w):
     return None
+
+def movesToMakeZigzag( nums: List[int]) -> int:
+    if len(nums)==1:
+        return 0
+    c1 = 0
+    c2 = 0
+    for i in range(0,len(nums),2):
+        v1 = 0
+        v2 = 0
+        if i>0:
+            v1 = max(nums[i]-nums[i-1]+1,0)
+        if i <len(nums)-1:
+            v2 = max(nums[i]-nums[i+1]+1,0)
+  
+        c1+=max(v1,v2)
+    for i in range(1,len(nums),2):
+        v1 = 0
+        v2 = 0
+        if i>0:
+            v1 = max(nums[i]-nums[i-1]+1,0)
+        if i <len(nums)-1:
+            v2 = max(nums[i]-nums[i+1]+1,0)   
+        c2+=max(v1,v2)
+    return min(c1,c2)
