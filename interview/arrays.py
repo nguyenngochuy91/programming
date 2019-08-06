@@ -1654,3 +1654,26 @@ def movesToMakeZigzag( nums: List[int]) -> int:
             v2 = max(nums[i]-nums[i+1]+1,0)   
         c2+=max(v1,v2)
     return min(c1,c2)
+    
+#    https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
+def jumpingOnClouds(c):
+    currentJ= 0
+    currentC = 0
+    while currentC<len(c):
+        try:
+            nextC = currentC+2
+            if c[nextC]==1:
+                nextC=currentC+1
+        except:
+            nextC= currentC+1
+        currentJ+=1
+        currentC= nextC
+        if currentC>=len(c)-1:
+            return currentJ
+    return currentJ
+#https://www.hackerrank.com/challenges/sherlock-and-anagrams/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=dictionaries-hashmaps&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
+#Two strings are anagrams of each other if the letters of one string can be rearranged 
+#to form the other string. Given a string, find the number of pairs of substrings of the string that are anagrams of each other.
+def sherlockAndAnagrams(s):
+    
+    return

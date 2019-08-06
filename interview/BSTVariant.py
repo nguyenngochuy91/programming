@@ -91,6 +91,7 @@ def getMin(nums):
         return nums[start]
     return min(nums[start],nums[stop])
 #https://www.hackerrank.com/challenges/climbing-the-leaderboard/problem
+######### great one
 def climbingLeaderboard(scores, alice):
     d= {}
     value = set()
@@ -154,3 +155,81 @@ def minEatingSpeed(piles, H):
     if check(piles,stop,H):
         return stop
     return start
+    
+#1146. Snapshot Array
+class SnapshotArray:
+######### great one
+    def __init__(self, length: int):
+        self.arr = {index:[[0,0]] for index in range(length)}
+        self.snapNum = -1
+    def set(self, index: int, val: int) -> None:
+        nextSnap = self.snapNum+1
+        # check if this is overide the currentSNap
+        if self.arr[index][-1][0]==nextSnap:
+            self.arr[index][-1][1] = val
+        else:
+            self.arr[index].append([nextSnap,val])
+
+    def snap(self) -> int:
+        self.snapNum+=1
+        return self.snapNum
+
+    def get(self, index: int, snap_id: int) -> int:
+        arr =self.arr[index]
+        # do a binary Search
+        start = 0
+        stop = len(arr)-1
+        while start+1<stop:
+            mid = (start+stop)//2
+            item = arr[mid]
+            currentSnap,value = item
+            if currentSnap==snap_id:
+                return value
+            elif currentSnap>snap_id:
+                stop = mid
+            else:
+                start = mid
+        if arr[stop][0]<=snap_id:
+            return arr[stop][1]
+        elif arr[start][0]<=snap_id:
+            return arr[start][1]
+            
+#https://www.hackerrank.com/challenges/repeated-string/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup&h_r=next-challenge&h_v=zen
+######### great one
+def repeatedString(s, n):
+    d= {}
+    current = None
+    for i in range(len(s)):
+        if s[i]=="a":
+            if not d:
+                d[i]=1
+                current = i
+            else:
+                d[i]=d[current]+1
+                current = i
+    bigCount = n//len(s)*(len(d))
+#    print ("bigCount",bigCount)
+    extraLength = n%len(s)
+#    print ("extraLength",extraLength)
+    if extraLength and d:
+        array = list(d.keys())
+        start = 0
+        stop = len(array)-1
+        while start+1<stop:
+            mid = (start+stop)//2
+            if array[mid] == extraLength-1:
+                return bigCount+d[array[mid]]
+            elif array[mid]<extraLength-1:
+                start=mid
+            else:
+                stop = mid
+#        print (array,start,stop)
+        if array[stop]<=extraLength-1:
+            return bigCount+d[array[stop]]
+        elif array[start]<=extraLength-1:
+            return bigCount+d[array[start]]
+    return bigCount
+    
+#s = "gfcaaaecbg"
+#n= 547602
+#print (repeatedString(s,n))
