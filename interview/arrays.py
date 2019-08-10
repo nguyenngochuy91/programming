@@ -6,7 +6,8 @@ Created on Fri Jan  4 19:43:28 2019
 """
 import heapq
 import math
-import typing
+from collections import defaultdict
+from typing import *
 # finding the maximum sum of the contiguous sub-array of a given array
 def findContiguousMaxSum(array):
     output = 0
@@ -1671,9 +1672,110 @@ def jumpingOnClouds(c):
         if currentC>=len(c)-1:
             return currentJ
     return currentJ
-#https://www.hackerrank.com/challenges/sherlock-and-anagrams/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=dictionaries-hashmaps&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
-#Two strings are anagrams of each other if the letters of one string can be rearranged 
-#to form the other string. Given a string, find the number of pairs of substrings of the string that are anagrams of each other.
-def sherlockAndAnagrams(s):
+
+
+#https://www.hackerrank.com/challenges/count-triplets-1/problem?h_l=interview&playlist_slugs%5B%5D%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D%5B%5D=dictionaries-hashmaps
+def countTriplets(arr, r):
+    v2 = defaultdict(int)
+    v3 = defaultdict(int)
+    count = 0
+    for k in arr:
+        count += v3[k]
+        v3[k*r] += v2[k]
+        v2[k*r] += 1
+
+    return count
     
+#arr = [1,2,1,2,4]
+#print (countTriplets(arr,2))
+
+#https://www.hackerrank.com/challenges/frequency-queries/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=dictionaries-hashmaps
+#You are given  queries. Each query is of the form two integers described below: 
+#-  : Insert x in your data structure. 
+#-  : Delete one occurence of y from your data structure, if present. 
+#-  : Check if any integer is present whose frequency is exactly . If yes, print 1 else 0.
+#!/bin/python3
+
+# Complete the freqQuery function below.
+def freqQuery(queries):
+    a1 = dict()  #Keep track of the number of times each queried number occurs in the array
+    a2 = dict() #[0]*len(queries)  #Keep track of how many numbers occur once, twice, etc.
+    
+    out = []
+
+    for (op,num) in queries:
+
+        if  (op == 1):
+            if not(num in a1):
+                a1[num] = 0
+
+            if not(a1[num] in a2):
+                a2[a1[num]] = 1
+
+            a2[a1[num]] -= 1
+            
+            a1[num] += 1
+
+            if not(a1[num] in a2):
+                a2[a1[num]] = 0
+
+            a2[a1[num]] += 1
+        
+        if (op == 2) & (num in a1):
+
+            a2[a1[num]] -= 1
+            a1[num] -= 1
+            a2[a1[num]] += 1
+
+            if a1[num] <= 0:
+                a1.pop(num)
+            
+
+        if (op == 3) & (num in a2):
+            out.append(int(a2[num]>0))
+            #out.append(a2[num])
+
+        elif (op==3):
+            out.append(0)
+
+    return out
+#https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
+# given an original array from 1,...,n. And another array compsed of those number, find the minimum of swap to get to
+#    the state
+def minimumBribes(q):
+    
+    return
+# given a non-empty arrays of interger, every elemtns appears twice except for one
+def singleNumber(nums):
+    return
+def anagramMappings(arr1, arr2):
+    # Write your code here
+    d2= {}
+    output = [None]*len(arr1)
+    for i in range(len(arr2)):
+        n2 = arr2[i] 
+        if n2 not in d2: 
+            d2[n2]=[i] 
+        else:
+            d2[n2].append(i)
+    d1= {}
+    for i in range(len(arr1)):
+        n1 = arr1[i] 
+        if n1 not in d1: 
+            d1[n1]=[i] 
+        else:
+            d1[n1].append(i)   
+#    print (d1,d2)
+    for key in d1:
+        index1 = d1[key]
+        index2 = d2[key]
+        for i in range(len(index1)):
+            output[index1[i]]=index2[i]
+    return output 
+
+#A = [12,28,46,32,50]
+#B = [50,12,32,46,28]
+#print (anagramMappings(A, B))
+#https://www.hackerrank.com/challenges/special-palindrome-again/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=strings&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
+def substrCount(n, s):
     return
