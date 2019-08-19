@@ -4,12 +4,16 @@ Created on Sun Jul 14 15:00:25 2019
 
 @author: huyn
 """
-
+import heapq,typing
+from collections import deque
+class TreeNode(object):
+    def __init__(self, x,left=None,right=None):
+        self.val = x
+        self.left = left
+        self.right = right
 # given a graph where vertices are cities, edge between vertices are bridges, with weight
 # given a graph, indicate by list of list, where each element of list [startNode,endNode,weight],
 # a source node, an end node, and k. Find the minimum weight path from source to end within k steps.
-
-import heapq
 def findCheapestPrice(n, flights, src, dst, k):
     k+=1
     # Write your code here
@@ -48,3 +52,26 @@ def findCheapestPrice(n, flights, src, dst, k):
         return -1 
     else:
         return distances[dst]
+    
+#1161. Maximum Level Sum of a Binary Tree
+#Given the root of a binary tree, the level of its root is 1, the level of its children is 2, and so on.
+
+#Return the smallest level X such that the sum of all the values of nodes at level X is maximal.
+def maxLevelSum(self, root: TreeNode) -> int:
+    currentL = 1
+    bestL,maxSum = 0,-float("inf")
+    queue = deque([root])
+    while queue:
+        currentSum,size = 0,len(queue)
+        for _ in range(size):
+            node = queue.popleft()
+            currentSum+=node.val
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        if currentSum>maxSum:
+            bestL = currentL
+            maxSum = currentSum
+        currentL+=1
+    return bestL

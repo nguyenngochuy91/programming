@@ -7,7 +7,7 @@ Created on Fri Jan  4 19:43:28 2019
 import heapq
 import math
 from collections import defaultdict
-from typing import *
+from typing import int, List
 # finding the maximum sum of the contiguous sub-array of a given array
 def findContiguousMaxSum(array):
     output = 0
@@ -1739,6 +1739,19 @@ def freqQuery(queries):
             out.append(0)
 
     return out
+
+#1162. As Far from Land as Possible
+#Given an N x N grid containing only values 0 and 1, where 0 represents water and 1 
+#represents land, find a water cell such that its distance to the nearest land cell is 
+#maximized and return the distance.
+#
+#The distance used in this problem is the Manhattan distance: the distance between 
+#two cells (x0, y0) and (x1, y1) is |x0 - x1| + |y0 - y1|.
+#
+#If no land or water exists in the grid, return -1.
+def maxDistance(grid: List[List[int]]) -> int:
+    return
+
 #https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
 # given an original array from 1,...,n. And another array compsed of those number, find the minimum of swap to get to
 #    the state
