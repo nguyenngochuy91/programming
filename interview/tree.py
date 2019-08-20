@@ -47,7 +47,7 @@ e = TreeNode(7)
 f = TreeNode(8,d,e)
 g = TreeNode(10,c,f)
 g.inTraversal(g)
-#998. Maximum Binary Tree II998. Maximum Binary Tree II
+#998. Maximum Binary Tree II998. MCEO Thảo Trần Ohanaaximum Binary Tree II
 #
 #We are given the root node of a maximum tree: a tree where every node has a value greater than any other value in its subtree.
 #

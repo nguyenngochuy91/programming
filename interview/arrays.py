@@ -6,8 +6,9 @@ Created on Fri Jan  4 19:43:28 2019
 """
 import heapq
 import math
-from collections import defaultdict
-from typing import int, List
+import random
+from collections import defaultdict,deque
+from typing import  List
 # finding the maximum sum of the contiguous sub-array of a given array
 def findContiguousMaxSum(array):
     output = 0
@@ -1750,17 +1751,26 @@ def freqQuery(queries):
 #
 #If no land or water exists in the grid, return -1.
 def maxDistance(grid: List[List[int]]) -> int:
-    return
+    n = len(grid)
+    queue = deque([(i,j) for i in range(n) for j in range(n) if grid[i][j]])
+    if len(queue)==n**2 or not queue:
+        return -1
+    depth = 0
+    while queue:
+        size = len(queue)
+        for _ in range(size):
+            x,y = queue.popleft()
+            position = [(0,1),(1,0),(0,-1),(-1,0)]
+            for a,b in position:
+                vX,vY = x+a,y+b
+                if vX>=0 and vX<n and vY>=0 and vY<n and grid[vX][vY]==0:
+                    grid[vX][vY]=1
+                    queue.append((vX,vY))
+        depth+=1
+    return depth-1
 
-#https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
-# given an original array from 1,...,n. And another array compsed of those number, find the minimum of swap to get to
-#    the state
-def minimumBribes(q):
-    
-    return
-# given a non-empty arrays of interger, every elemtns appears twice except for one
-def singleNumber(nums):
-    return
+
+
 def anagramMappings(arr1, arr2):
     # Write your code here
     d2= {}
@@ -1786,9 +1796,50 @@ def anagramMappings(arr1, arr2):
             output[index1[i]]=index2[i]
     return output 
 
+    
+#36. Valid Sudoku
+#    Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+def isValidSudoku( board: List[List[str]]) -> bool:    
+    for i in range(3):
+        for j in range(3):
+            t = set()
+            starX,starY= i*3,j*3
+            for x in range(3):
+                for y in range(3):
+                    if board[starX+x][starY+y]!="." and board[starX+x][starY+y] not in t:
+                        t.add(board[starX+x][starY+y])
+                        continue
+                    if board[starX+x][starY+y] in t:
+                        return False
+    for i in range(9):
+        t = set()
+        for j in range(9):
+            if board[i][j]!="." and board[i][j] not in t:
+                t.add(board[i][j])
+                continue
+            if board[i][j] in t:
+                return False
+    for i in range(9):
+        t = set()
+        for j in range(9):
+            if board[j][i]!="." and board[j][i] not in t:
+                t.add(board[j][i])
+                continue
+            if board[j][i] in t:
+                return False              
+    return True
+
+
 #A = [12,28,46,32,50]
 #B = [50,12,32,46,28]
 #print (anagramMappings(A, B))
 #https://www.hackerrank.com/challenges/special-palindrome-again/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=strings&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
 def substrCount(n, s):
+    return
+
+#https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
+# given an original array from 1,...,n. And another array compsed of those number, find the minimum of swap to get to
+#    the state
+def minimumBribes(q):
+    
     return
