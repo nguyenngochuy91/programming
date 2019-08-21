@@ -1830,16 +1830,34 @@ def isValidSudoku( board: List[List[str]]) -> bool:
     return True
 
 
-#A = [12,28,46,32,50]
-#B = [50,12,32,46,28]
-#print (anagramMappings(A, B))
-#https://www.hackerrank.com/challenges/special-palindrome-again/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=strings&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
-def substrCount(n, s):
-    return
-
 #https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
 # given an original array from 1,...,n. And another array compsed of those number, find the minimum of swap to get to
 #    the state
 def minimumBribes(q):
-    
+        bribes = 0
+    for i in range(len(q)-1,-1,-1):
+        if q[i] - (i + 1) > 2:
+            print('Too chaotic')
+            return
+        for j in range(max(0, q[i] - 2),i):
+            if q[j] > q[i]:
+                bribes+=1
+    print(bribes)
     return
+#https://www.hackerrank.com/challenges/minimum-swaps-2/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays&h_r=next-challenge&h_v=zen
+#You are given an unordered array consisting of consecutive integers 
+#You are allowed to swap any two elements. You need to find the minimum number of swaps required to sort the array in ascending order.
+def minimumSwaps(arr):
+    temp = [0] * (len(arr) + 1)
+    for pos, val in enumerate(arr):
+        temp[val] = pos
+        pos += 1
+    swaps = 0
+    for i in range(len(arr)):
+        if arr[i] != i+1:
+            swaps += 1
+            t = arr[i]
+            arr[i] = i+1
+            arr[temp[i+1]] = t
+            temp[t] = temp[i+1]
+    return swaps    
