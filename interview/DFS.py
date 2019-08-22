@@ -5,6 +5,12 @@ Created on Wed Aug 21 19:39:06 2019
 @author: huyn
 """
 from os import walk
+from typing import *
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
 # finding a file in a directory
 def findFile(directory,name):
     r =[]
@@ -147,19 +153,55 @@ def exist(board, word):
 #        You have a set of tiles, where each tile has one letter tiles[i] printed on it.  
 #        Return the number of possible non-empty sequences of letters you can make.
 def numTilePossibilities(tiles):
-    res = []
+    temp = set()
     def dfs(tiles,index,current):
         if index==len(tiles):
-            if current not in res:
-                res.append(current)
+            if current not in temp:
+                temp.add(current)
         if index<len(tiles):
             dfs(tiles,index+1,current+tiles[index])
             dfs(tiles,index+1,current)
     dfs(tiles,0,"")
-    return res
+    # for each item in res, we permute
+    res =set()
+    def permute(string,current):
+        if not string and current not in res:
+            res.add(current)
+        for i in range(len(string)):
+            item = string.pop(i)
+            permute(string,current+item)
+            string.insert(i,item)
+    for string in temp:
+        permute(list(string),"")
+    return len(res)-1
 #print (numTilePossibilities("AAB"))
-#print (numTilePossibilities("AAABBC"))
+#print (numTilePossibilities("TBAKNLM"))
 
+        
+#979. Distribute Coins in Binary Tree
+#Given the root of a binary tree with N nodes, each node in the tree has node.val coins, and there are N coins total.
+#
+#In one move, we may choose two adjacent nodes and move one coin from one node to another.  
+#        (The move may be from parent to child, or from child to parent.)
+#
+#Return the number of moves required to make every node have exactly one coin.
+def distributeCoins(root: TreeNode) -> int:  
+    step = 0
+    def dfs(root,parent):
+        if root:
+            # set up the root.need right here
+            val = root.val
+            # if it is a leaf node, any extra has to be pushed up, if it is 0, it needs 1 more from top down
+            if not root.left and not root.right:
+                root.extra = root.val-1
+                step +=abs(root.extra)
+            else:
+                root.extra = 0
+            dfs(root.left,root)
+            dfs(root.right,root)
+        
+    return step
+        
 # remove the least amount of parenthese to make valid
 #301. Remove Invalid Parentheses
 def removeInvalidParentheses(s):
