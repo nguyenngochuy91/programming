@@ -1861,3 +1861,35 @@ def minimumSwaps(arr):
             arr[temp[i+1]] = t
             temp[t] = temp[i+1]
     return swaps    
+    
+#https://www.hackerrank.com/challenges/crush/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
+#Starting with a 1-indexed array of zeros and a list of operations, for each operation
+#add a value to each of the array element between two given indices, inclusive. 
+#Once all operations have been performed, return the maximum value in your array.
+#
+#For example, the length of your array of zeros . Your list of queries is as follows:
+def arrayManipulation(n, queries):
+    res = [0]*(n+1)
+    for q in queries:
+        i,j,k = q
+        res[i-1]+=k
+        res[j]-=k
+    for i in range(1,n):
+        res[i]+=res[i-1]
+    return max(res[:n])
+    
+#https://www.hackerrank.com/challenges/special-palindrome-again/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=strings
+#A string is said to be a special string if either of two conditions is met:
+#
+#All of the characters are the same, e.g. aaa.
+#All characters except the middle one are the same, e.g. aadaa.
+#    A special substring is any substring of a string which meets one of those criteria. Given a string, determine how many special substrings can be formed from it.
+def substrCount(n, s):
+    
+    return 
+    
+#https://www.hackerrank.com/challenges/common-child/problem?h_l=interview&playlist_slugs%5B%5D%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D%5B%5D=strings
+#A string is said to be a child of a another string if it can be formed by deleting 0 or more characters from the other string. Given two strings of equal length, 
+#    what's the longest string that can be constructed such that it is a child of both?
+def commonChild(s1, s2):
+    return 
