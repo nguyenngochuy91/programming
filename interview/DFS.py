@@ -186,21 +186,36 @@ def numTilePossibilities(tiles):
 #
 #Return the number of moves required to make every node have exactly one coin.
 def distributeCoins(root: TreeNode) -> int:  
-    step = 0
     def dfs(root,parent):
         if root:
+            root.extra =0 
+            step = 0
             # set up the root.need right here
-            val = root.val
             # if it is a leaf node, any extra has to be pushed up, if it is 0, it needs 1 more from top down
             if not root.left and not root.right:
                 root.extra = root.val-1
-                step +=abs(root.extra)
-            else:
-                root.extra = 0
-            dfs(root.left,root)
-            dfs(root.right,root)
-        
-    return step
+            elif root.left and root.right:
+                step+= dfs(root.left,root)
+                step+= dfs(root.right,root)
+                root.extra+=root.val-1+root.left.extra+root.right.extra
+            elif root.left:
+                step+=dfs(root.left,root)
+                root.extra+=root.val-1+root.left.extra
+            elif root.right:
+                step+=dfs(root.right,root)
+                root.extra+=root.val-1+root.right.extra                
+            return step
+
+    return dfs(root,None)
+#959. Regions Cut By Slashes
+#In a N x N grid composed of 1 x 1 squares, each 1 x 1 square consists of a /, \, or 
+#blank space.  These characters divide the square into contiguous regions.
+#
+#(Note that backslash characters are escaped, so a \ is represented as "\\".)
+#
+#Return the number of regions.
+def regionsBySlashes(grid: list[str]) -> int:
+    return
         
 # remove the least amount of parenthese to make valid
 #301. Remove Invalid Parentheses
