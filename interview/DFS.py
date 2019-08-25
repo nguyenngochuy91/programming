@@ -6,6 +6,7 @@ Created on Wed Aug 21 19:39:06 2019
 """
 from os import walk
 from typing import *
+import math
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -207,18 +208,47 @@ def distributeCoins(root: TreeNode) -> int:
             return step
 
     return dfs(root,None)
-#959. Regions Cut By Slashes
-#In a N x N grid composed of 1 x 1 squares, each 1 x 1 square consists of a /, \, or 
-#blank space.  These characters divide the square into contiguous regions.
+#89. Gray Code
+#The gray code is a binary numeral system where two successive values differ in only one bit.
 #
-#(Note that backslash characters are escaped, so a \ is represented as "\\".)
-#
-#Return the number of regions.
-def regionsBySlashes(grid: list[str]) -> int:
-    return
-        
-# remove the least amount of parenthese to make valid
-#301. Remove Invalid Parentheses
-def removeInvalidParentheses(s):
-    
-    return
+#Given a non-negative integer n representing the total number of bits in the code, 
+#print the sequence of gray code. A gray code sequence must begin with 0.
+# 2 number different by 1 bit has difference is a 2 of power
+def grayCode(n):
+    size = math.ceil(math.log2(n))
+    start = "0"*size
+    def dfs(current,visited,nums):
+        if len(visited)==res:
+            return
+        else:
+            for i in range(size):
+                return
+        return 
+    dfs(start,set())
+    return res
+def removeZeroSumSublists(arr):
+    while True:
+        d= {}
+        currentSum =0
+        check = False
+        for i in range(len(arr)):
+            currentSum+=arr[i]
+            if currentSum == 0:
+                check = True
+                d[currentSum]= [-1,i]
+                break
+            if currentSum in d:
+                check = True
+                d[currentSum].append(i)
+                break
+            else:
+                d[currentSum]=[i+1]
+                
+        if not check:
+            break
+        else:
+            x,y= d[currentSum]
+            arr = arr[:x]+arr[y+1:]
+    return arr
+print (removeZeroSumSublists([1,2,-3,3,1]))
+print (removeZeroSumSublists([1,-1]))
