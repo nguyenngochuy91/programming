@@ -6,7 +6,8 @@ Created on Wed Aug 21 19:39:06 2019
 """
 from os import walk
 from typing import *
-import math
+from math import log2
+import random
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -215,40 +216,108 @@ def distributeCoins(root: TreeNode) -> int:
 #print the sequence of gray code. A gray code sequence must begin with 0.
 # 2 number different by 1 bit has difference is a 2 of power
 def grayCode(n):
-    size = math.ceil(math.log2(n))
-    start = "0"*size
-    def dfs(current,visited,nums):
-        if len(visited)==res:
-            return
+    mySet = [item for item in range(1,n+1)]
+    res   = [0]
+    def isValid(num1,num2):
+        c = 0
+        while num1 and num2:
+            if num1%2 !=num2%2:
+                if c==1:
+                    return False
+                else:
+                    c+=1
+            num1//=2
+            num2//=2
+        m = max(num1,num2)
+        m = bin(m)[2:]
+        for item in m:
+            if m=="1":
+                c+=1
+        return c<=1
+        
+    def dfs(currentNum,mySet):
+        if not mySet:
+            return True
         else:
-            for i in range(size):
-                return
-        return 
-    dfs(start,set())
+            check = False
+            for i in range(len(mySet)):
+                num = mySet.pop(i)
+                if isValid(num,currentNum): # num is valid
+#                    print (currentNum,num)
+                    res.append(num)
+#                    print (res,mySet)
+                    check = dfs(num,mySet)
+                    if not check:
+                        res.pop()
+                mySet.insert(i,num)
+                if check:
+                    break
+            return check
+    found = dfs(0,mySet)
     return res
-def removeZeroSumSublists(arr):
-    while True:
-        d= {}
-        currentSum =0
-        check = False
-        for i in range(len(arr)):
-            currentSum+=arr[i]
-            if currentSum == 0:
-                check = True
-                d[currentSum]= [-1,i]
-                break
-            if currentSum in d:
-                check = True
-                d[currentSum].append(i)
-                break
-            else:
-                d[currentSum]=[i+1]
-                
-        if not check:
-            break
-        else:
-            x,y= d[currentSum]
-            arr = arr[:x]+arr[y+1:]
+#res= grayCode(30)
+#1020. Number of Enclaves
+#Given a 2D array A, each cell is 0 (representing sea) or 1 (representing land)
+#
+#A move consists of walking from one land square 4-directionally to another land square, or off the boundary of the grid.
+#
+#Return the number of land squares in the grid for which we cannot walk off the boundary of the grid in any number of moves.
+def numEnclaves( A) :
+    row = len(A)
+    col = len(A[0])
+    count = 0
+    global smallCount
+    smallCount =0 
+    def dfs(r,c):
+        # set A[r][c]=0
+#        print ("start {}",(r,c))
+        global smallCount
+        smallCount+=1
+        A[r][c]=0
+        t= [(0,1),(1,0),(0,-1),(-1,0)]
+        overal = False
+        for x,y in t:
+            a,b = r+x,y+c
+            if a>=0 and a<row and b>=0 and b<col and A[a][b]==1:
+                check = dfs(a,b)
+                if check:
+                    overal=True
+        if r==0 or c==0 or r== row-1 or c == col-1:
+            return True
+        return overal
+    for r in range(row):
+        for c in range(col):
+            if A[r][c]:
+                goodPath = dfs(r,c)
+                print (r,c,goodPath,smallCount)
+                if not goodPath:
+                    count+=smallCount
+                smallCount= 0 
+    return count
+#A=[[0,0,0,0],[1,0,1,0],[0,1,1,0],[0,0,0,0]]
+#print (numEnclaves( A) )
+#A=[[0,1,1,0],[0,0,1,0],[0,0,1,0],[0,0,0,0]]
+#print (numEnclaves( A) )
+def generate(n):
+    arr= []
+    for i in range(n):
+        t= []
+        for j in range(n):
+            t.append(random.randint(0,1))
+        arr.append(t)
     return arr
-print (removeZeroSumSublists([1,2,-3,3,1]))
-print (removeZeroSumSublists([1,-1]))
+#947. Most Stones Removed with Same Row or Column
+#On a 2D plane, we place stones at some integer coordinate points.  Each coordinate point may have at most one stone.
+#
+#Now, a move consists of removing a stone that shares a column or row with another stone on the grid.
+#
+#What is the largest possible number of moves we can make?
+def removeStones(stones):
+    cc = []
+    for stone in stones:
+        
+    return
+stones = [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]
+stones = [[0,0],[0,2],[1,1],[2,0],[2,2]]
+stones = [[0,0]]
+        

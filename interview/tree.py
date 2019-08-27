@@ -408,3 +408,7 @@ def btreeGameWinningMove(root: TreeNode, n: int, x: int) -> bool:
     if parentSum>(leftSum+rightSum) or leftSum>rightSum+parentSum or rightSum>leftSum+parentSum:
         return True
     return False
+
+# get the minimum spanning tree
+def minimumSpanningTree(root):
+    return
