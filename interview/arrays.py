@@ -1926,9 +1926,28 @@ def canMakePaliQueries(self, s: str, queries: List[List[int]]) -> List[bool]:
 #All characters except the middle one are the same, e.g. aadaa.
 #    A special substring is any substring of a string which meets one of those criteria. Given a string, determine how many special substrings can be formed from it.
 def substrCount(n, s):
-    
-    return 
-    
+    # shorten the string
+    arr = []
+    letter = s[0]
+    count =1
+    for l in s[1:]:
+        if l==letter:
+            count +=1
+        else:
+            arr.append((letter,count))
+            letter = l
+            count  = 1
+    arr.append((letter,count))
+    count = 0
+    for i in range(len(arr)):
+        currentLetter,currentCount = arr[i]
+        count += currentCount*(currentCount+1)//2
+        if i >=2:
+            # check if our current could be second half of type 2:
+            if arr[i-1][1]==1 and arr[i-2][0]==currentLetter:
+                count+=min(currentCount,arr[i-2][1])
+    return count
+
 #https://www.hackerrank.com/challenges/common-child/problem?h_l=interview&playlist_slugs%5B%5D%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D%5B%5D=strings
 #A string is said to be a child of a another string if it can be formed by deleting 0 or more characters from the other string. Given two strings of equal length, 
 #    what's the longest string that can be constructed such that it is a child of both?
