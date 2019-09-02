@@ -1834,7 +1834,7 @@ def isValidSudoku( board: List[List[str]]) -> bool:
 # given an original array from 1,...,n. And another array compsed of those number, find the minimum of swap to get to
 #    the state
 def minimumBribes(q):
-        bribes = 0
+    bribes = 0
     for i in range(len(q)-1,-1,-1):
         if q[i] - (i + 1) > 2:
             print('Too chaotic')
@@ -1878,6 +1878,47 @@ def arrayManipulation(n, queries):
         res[i]+=res[i-1]
     return max(res[:n])
     
+# 1177 Can Make Palindrome from Substring
+def canMakePaliQueries(self, s: str, queries: List[List[int]]) -> List[bool]:
+    letter = "qwertyuiopasdfghjklzxcvbnm"
+    d = {}
+    for l in letter:
+        d[l]=0
+    dictionary={}
+    for i in range(len(s)):
+        dic = {}
+        for l in letter:
+            dic[l]=d[l]
+        dic[s[i]]+=1
+        dictionary[i]=dic
+        d= dic
+    ans = []
+    for query in queries:
+        left,right,k = query
+        odd = 0
+        val =0
+        if left == 0:
+            dic = dictionary[right]
+            for l in letter:
+                if dic[l]%2:
+                    if odd ==1:
+                        val+=1
+                    else:
+                        odd +=1
+        else:
+            for l in letter:
+                if (dictionary[right][l]-dictionary[left-1][l])%2:
+                    if odd ==1:
+                        val+=1
+                    else:
+                        odd+=1
+#        print (left,right,k,val)
+        if (val%2)+(val//2)<=k:
+            ans.append(True)
+        else:
+            ans.append(False)
+    return ans        
+
 #https://www.hackerrank.com/challenges/special-palindrome-again/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=strings
 #A string is said to be a special string if either of two conditions is met:
 #
