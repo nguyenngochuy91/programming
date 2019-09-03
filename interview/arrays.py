@@ -1952,4 +1952,19 @@ def substrCount(n, s):
 #A string is said to be a child of a another string if it can be formed by deleting 0 or more characters from the other string. Given two strings of equal length, 
 #    what's the longest string that can be constructed such that it is a child of both?
 def commonChild(s1, s2):
-    return 
+    size1= len(s1)
+    size2= len(s2)
+    row = [0]*(size1+1) 
+#    print ()
+#    print (len(row))
+    for i in range(1,size2+1):
+        temp = [0]
+        for j in range(1,size1+1):
+#            print (i,j)
+            if s2[i-1]== s1[j-1]:
+                temp.append(row[j-1]+1)
+            else:
+                temp.append(max(temp[-1],row[j]))
+                
+        row = temp
+    return row[-1]
