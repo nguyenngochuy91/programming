@@ -5,6 +5,7 @@ Created on Mon Sep  2 21:46:44 2019
 @author: huyn
 """
 import heapq
+from collections import deque
 #The Ruler of HackerLand believes that every citizen of the country should have access to a library. 
 #Unfortunately, HackerLand was hit by a tornado that destroyed all of its libraries and obstructed its roads! 
 #As you are the greatest programmer of HackerLand, the ruler wants your help to repair the roads and build 
@@ -57,3 +58,52 @@ def roadsAndLibraries(n, c_lib, c_road, cities):
 #roadsAndLibraries(n, c_lib, c_road, cities)
 #n, c_lib, c_road, cities=6 ,2, 5, [[1, 3], [3, 4], [2, 4], [1, 2], [2, 3], [5, 6]]
 #roadsAndLibraries(n, c_lib, c_road, cities)
+    
+# find the nearest clone
+# https://www.hackerrank.com/challenges/find-the-nearest-clone/problem?h_l=interview&playlist_slugs%5B%5D%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D%5B%5D=graphs
+def findShortest(graph_nodes, graph_from, graph_to, ids, val):
+    edges = {}
+    for i in range(len(graph_from)):
+        start = graph_from[i]
+        stop  = graph_to[i]
+        if start not in edges:
+            edges[start]=[]
+        if stop not in edges:
+            edges[stop]=[]
+        edges[start].append(stop)
+        edges[stop].append(start)
+    colors = set()
+    for i in range(len(ids)):
+        if ids[i]==val:
+            colors.add(i+1)
+    if len(colors)<=1:
+    
+        return -1
+    minimum = float("inf")
+    visited = set()
+    for id in colors:
+        if id in visited:
+            continue
+        visited.add(id)
+        queue = deque([])
+        count = 1
+        for neighbor in edges[id]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                visited.add(node)
+                if ids[node-1]==val:
+                    minimum= min(minimum,count)
+                    break
+                for neighbor in edges[node]:
+                    if neighbor not in visited:
+                        queue.append(neighbor)
+            count+=1
+    return minimum
+#graph_nodes, graph_from, graph_to, ids, val= 4 ,[1, 1, 4] ,[2, 3, 2] ,[1, 2, 1, 1], 1
+#findShortest(graph_nodes, graph_from, graph_to, ids, val)
+graph_nodes, graph_from, graph_to, ids, val=5 ,[1, 1, 2, 3] ,[2, 3, 4, 5] ,[1, 2, 3, 3, 2] ,2
+print(findShortest(graph_nodes, graph_from, graph_to, ids, val))
