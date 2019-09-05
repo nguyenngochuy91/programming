@@ -283,9 +283,10 @@ def collision(speeds,pos):
 # * Your task is to create a regular expression that exactly matches valid
 # * version strings.
 
-text = {"1x2~rc1":False,
+texts = {"1x2~rc1":False,
         "123~alpha":False,
         "12345.~alpha1":False,
+        "67890.1":True,
         "67890.1~beta973":True,
         "23415.67~alpha0":True,
         "83461.678~rc12":True,
@@ -298,3 +299,10 @@ text = {"1x2~rc1":False,
         ".92167~97":False,
         "43.98~alpha53486":True,
         "43.98~alpha5":True}
+        
+for s in texts:
+    pattern = re.search(r'(^\d+\.\d+)(~(alpha|beta|rc)\d+){0,1}$',s)
+    if pattern and not texts[s]:
+        print (pattern.group())
+    if not pattern and texts[s]:
+        print (s)

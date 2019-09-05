@@ -49,5 +49,58 @@ Sets
 [a-zA-Z]	Returns a match for any character alphabetically between a and z, lower case OR upper case	
 [+]	In sets, +, *, ., |, (), $,{} has no special meaning, so [+] means: return a match for any + character in the string
 
+Identifiers
+\ : an escape
+\d: any number
+\D: anything but a number
+\s: any space
+\S: anything but a space
+\w: any character
+\W: anything but a character
+. : any character except new line
+\b : the whitespace around words
+\. : a period
 
+Modifiers: type, amount, ... (used after identifiers)
+{1,3} expect one to three of an identifiers
+
+\d{1-3} | \w {5-6}
+
+White Space Characters:
+\n new line
+\s space
+\t tab
+\e escape
+\f form feed
+\r return
 """
+text_to_search = '''
+abcdefghijklmnopqurtuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+1234567890
+Ha HaHa
+MetaCharacters (Need to be escaped):
+. ^ $ * + ? { } [ ] \ | ( )
+coreyms.com
+321-555-4321
+123.555.1234
+123*555*1234
+800-555-1234
+900-555-1234
+Mr. Schafer
+Mr Smith
+Ms Davis
+Mrs. Robinson
+Mr. T
+https://www.google.com
+http://coreyms.com
+https://youtube.com
+https://www.nasa.gov
+
+CoreyMSchafer@gmail.com
+corey.schafer@university.edu
+corey-321-schafer@my-work.net
+'''
+
+
+pattern = re.findall(r'[a-zA-Z.]+@[a-zA-Z]+\.(com|edu)')
