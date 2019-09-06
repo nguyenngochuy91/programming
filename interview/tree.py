@@ -4,6 +4,7 @@ Created on Fri May 17 17:05:06 2019
 
 @author: huyn
 """
+import math
 # template
 # Base Case
 # Recursive Call
@@ -46,7 +47,7 @@ d = TreeNode(6)
 e = TreeNode(7)
 f = TreeNode(8,d,e)
 g = TreeNode(10,c,f)
-g.inTraversal(g)
+#g.inTraversal(g)
 #998. Maximum Binary Tree II998. MCEO Thảo Trần Ohanaaximum Binary Tree II
 #
 #We are given the root node of a maximum tree: a tree where every node has a value greater than any other value in its subtree.
@@ -393,14 +394,46 @@ def btreeGameWinningMove(root: TreeNode, n: int, x: int) -> bool:
     if parentSum>(leftSum+rightSum) or leftSum>rightSum+parentSum or rightSum>leftSum+parentSum:
         return True
     return False
+    
+#1104. Path In Zigzag Labelled Binary Tree
+def pathInZigZagTree(label: int):
+    arr = [label]
+    level = int(math.log2(label))
+    for i in range(level-1,-1,-1):
+        val = label//2
+        val = (2**(i+1)-1+2**i-val)
+        arr.append(val)
+#        print (label,val,i)
+        label = val
+            
+    return arr[::-1]
+#print(pathInZigZagTree(14))
+#print(pathInZigZagTree(26))
 
-#Balanced Forest
-#Greg has a tree of nodes containing integer data. He wants to insert a node with some non-zero integer 
-#value somewhere into the tree. His goal is to be able to cut two edges and have the values of each of the 
-#three new trees sum to the same amount. This is called a balanced forest. Being frugal, the data value
-# he inserts should be minimal. Determine the minimal amount that a new node can have 
-# to allow creation of a balanced forest. 
-#If it's not possible to create a balanced forest, return -1.
-def balancedForest(c, edges):
-    return
-    return
+#951. Flip Equivalent Binary Trees
+def flipEquiv(root1: TreeNode, root2: TreeNode) -> bool:
+    if not root1 and not root2:
+        return True
+    elif not root1 and root2:
+        return False
+    elif not root2 and root1:
+        return False 
+    else:
+        if root1.val!=root2.val:
+            return False
+        else:
+            check1=flipEquiv(root1.left,root2.left) and flipEquiv(root2.right,root2.right) 
+            check2=flipEquiv(root1.right,root2.left) and flipEquiv(root2.left,root2.right)
+            return check1 or check2
+def isEqual(root1: TreeNode,root2: TreeNode)->bool:
+    if not root1 and not root2:
+        return True
+    elif not root1 and root2:
+        return False
+    elif not root2 and root1:
+        return False
+    else:
+        if root1.val!=root2.val:
+            return False
+        else:
+            return isEqual(root1.left,root2.left) and isEqual(root2.right,root2.right)

@@ -107,3 +107,46 @@ def findShortest(graph_nodes, graph_from, graph_to, ids, val):
 #findShortest(graph_nodes, graph_from, graph_to, ids, val)
 graph_nodes, graph_from, graph_to, ids, val=5 ,[1, 1, 2, 3] ,[2, 3, 4, 5] ,[1, 2, 3, 3, 2] ,2
 print(findShortest(graph_nodes, graph_from, graph_to, ids, val))
+
+#DFS: Connected Cell in a Grid
+def maxRegion(grid):
+    row = len(grid)
+    col = len(grid[0])
+    def dfs(grid,x,y,row,col):
+        size = 0
+        if grid[x][y]:
+            grid[x][y]=0
+            size+=1
+            temp = [(1,1),(-1,-1),(1,-1),(-1,1),
+                    (0,1),(1,0),(0,-1),(-1,0)]
+            for a,b in temp:
+                newX,newY=x+a,b+y
+                if newX>=0 and newX<row and newY>=0 and newY<col:
+                    size+=   dfs(grid,newX,newY,row,col)
+        return size
+    myMax = 0
+    for i in range(row):
+        for j in range(col):
+            myMax= max(myMax,dfs(grid,i,j,row,col))
+    return myMax
+#grid = [[1,1,0,0],
+#        [0,1,1,0],
+#        [0,0,1,0],
+#        [1,0,0,0]
+#        ]
+#print (maxRegion(grid))
+
+def minTime(roads, machines,n):
+    
+    d= {}
+    minimal =0
+    # if any of the machine share an edge, delete the edge,add the weight
+#    for start,end,time in roads:
+#        
+    return 
+
+
+roads,machines=[[2, 1, 8], [1, 0, 5], [2, 4, 5], [1, 3, 4]] ,[2, 4, 0]
+print (minTime(roads, machines))
+roads,machines=[[0, 1, 4], [1, 2, 3], [1, 3, 7], [0, 4, 2]] ,[2, 3, 4]
+print (minTime(roads, machines))
