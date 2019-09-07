@@ -11,6 +11,14 @@ import math
 #   Request (Top Down)
 #   Retrieve (Bottom Up)
 # Definition for a binary tree node.
+class Node:
+    def __init__(self, val, isLeaf, topLeft, topRight, bottomLeft, bottomRight):
+        self.val = val
+        self.isLeaf = isLeaf
+        self.topLeft = topLeft
+        self.topRight = topRight
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
 class TreeNode(object):
     def __init__(self, x,left=None,right=None):
         self.val = x
@@ -48,7 +56,7 @@ e = TreeNode(7)
 f = TreeNode(8,d,e)
 g = TreeNode(10,c,f)
 #g.inTraversal(g)
-#998. Maximum Binary Tree II998. MCEO Thảo Trần Ohanaaximum Binary Tree II
+#998. Maximum Binary Tree II998.  Binary Tree II
 #
 #We are given the root node of a maximum tree: a tree where every node has a value greater than any other value in its subtree.
 #
@@ -437,3 +445,7 @@ def isEqual(root1: TreeNode,root2: TreeNode)->bool:
             return False
         else:
             return isEqual(root1.left,root2.left) and isEqual(root2.right,root2.right)
+            
+def construct(grid) -> 'Node':
+    
+    return None
