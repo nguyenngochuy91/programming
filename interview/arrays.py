@@ -1983,4 +1983,20 @@ def maxSumAfterPartitioning( A: List[int], K: int) -> int:
             curMax = max(curMax, A[i - k + 1])
             dp[i] = max(dp[i], dp[i - k] + curMax * k)
     return dp[N - 1]
-     
+# max array  sum
+# Given an array of integers, find the subset of non-adjacent elements with the maximum sum. Calculate the sum of that subset.
+def maxSubsetSum(arr):
+    if len(arr)<=2:
+        return max(0,max(arr))
+    else:
+        dp = [max(0,arr[0]),max(arr[0],arr[1],arr[0]),0]
+        for i in range(2,len(arr)):
+            if arr[i]>0:
+                dp[2] = max(dp[1],dp[0]+arr[i])
+            else:
+                dp[2]= max(dp[1],dp[0])
+            dp[0],dp[1]=dp[1],dp[2]
+        
+    return dp[2]
+arr= [3,5,-7,8,10]
+print (maxSubsetSum(arr))
