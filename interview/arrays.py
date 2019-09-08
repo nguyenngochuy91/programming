@@ -6,9 +6,10 @@ Created on Fri Jan  4 19:43:28 2019
 """
 import heapq
 import math
-import random
+import random,sys
 from collections import defaultdict,deque
 from typing import  List
+from itertools import permutations
 # finding the maximum sum of the contiguous sub-array of a given array
 def findContiguousMaxSum(array):
     output = 0
@@ -754,15 +755,6 @@ def minimumDeleteSum(s1,s2):
                 dp[i][j] = min(dp[i-1][j]+ord(s1[i-1]),dp[i][j-1]+ord(s2[j-1]))
     return dp[-1][-1]
 
-#932. Beautiful Array
-#For some fixed N, an array A is beautiful if it is a permutation of the integers 1, 2, ..., N, such that:
-#
-#For every i < j, there is no k with i < k < j such that A[k] * 2 = A[i] + A[j].
-#
-#Given N, return any beautiful array A.  (It is guaranteed that one exists.)
-
-def beautifulArray(N):
-    return None
 #
 #Write a function that reverses a string. The input string is given as an array of characters char[].
 #
@@ -1998,5 +1990,229 @@ def maxSubsetSum(arr):
             dp[0],dp[1]=dp[1],dp[2]
         
     return dp[2]
-arr= [3,5,-7,8,10]
-print (maxSubsetSum(arr))
+#arr= [3,5,-7,8,10]
+#print (maxSubsetSum(arr))
+    
+#    https://www.hackerrank.com/challenges/angry-children/problem?h_l=interview&playlist_slugs%5B%5D%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D%5B%5D=greedy-algorithms
+def maxMin(k, arr):
+    arr.sort()
+    if k>=len(arr):
+        return max(arr)-min(arr)
+    currentMin,currentMax = arr[0],arr[k-1]
+    output = currentMax-currentMin
+    for i in range(len(arr)-k+1):
+        currentMin,currentMax=arr[i],arr[i+k-1]
+        output= min(output,currentMax-currentMin)
+    return output
+#print (maxMin(3,[10, 100, 300, 200, 1000, 20, 30]))
+#print (maxMin(4,[1, 2, 3, 4, 10, 20, 30, 40, 100, 200]))
+#print (maxMin(2,[1, 2, 1, 2, 1]))
+    
+def getMinimumCost(k, c):
+    c.sort(reverse = True)
+    count = 1
+    mySum = 0
+    for i in range(0,len(c),k):
+        mySum+=sum(c[i:i+k])*count
+#        print (mySum)
+        count+=1
+    return mySum
+
+#c= [1,3,5,7,9]    
+#print (getMinimumCost(3,c))
+###############################################################################
+##Crossword Puzzle
+def crosswordPuzzle(crossword, words):
+    crossword = [list(word) for word in crossword]
+    vertical = findVertical(crossword)
+    horizontal = findHorizontal(crossword)
+    wordDictionary = lengthToWord(words)
+    # we solve our crossword based on the horizonal and vertical, and the length of the word
+    # we find the word to fit in first but recursive solve for each length
+    lengths = list(wordDictionary.keys())
+    solveLength(crossword,0,lengths,vertical,horizontal,wordDictionary)
+    crossword = ["".join(word) for word in crossword]
+    print (crossword)
+# for a given length, fill all possible word of that length in to the crossword
+def solveLength(crossword,index,lengths,vertical,horizontal,wordDictionary):
+    if index == len(lengths):
+        return True
+    length   = lengths[index]
+    wordList = wordDictionary[length]
+    perm = permutations(wordList)
+    for potential in list(perm):
+        canFill = fill(crossword,horizontal,vertical,potential,length)
+        if canFill:
+            nextStep = solveLength(crossword,index+1,lengths,vertical,horizontal,wordDictionary)
+        else:
+            nextStep = False
+        if nextStep:
+            break
+    return nextStep
+# this try to fill our current length for our crossword,return True if nothing conflicts, else , return False
+def fill(crossword,horizontal,vertical,potential,length):
+    try:
+        toFillHorizontal = horizontal[length]
+    except:
+        toFillHorizontal = None
+    try:
+        toFillVertical = vertical[length]
+    except:
+        toFillVertical = None   
+    check = True
+    filled = set()
+#    print()
+#    print (length)
+#    print (crossword)
+#    print (toFillHorizontal)
+#    print (toFillVertical)
+    tempH = []
+    tempV  = []
+    for word in potential:
+        if toFillHorizontal:
+            r,c = toFillHorizontal.pop()
+            tempH.append((r,c))
+            for i in range(length):
+                if crossword[r][c]!= "-" and crossword[r][c]!=word[i]: 
+                # has a letter in it already, then wrong
+                    check= False
+                    break
+                elif crossword[r][c]=="-":
+                    crossword[r][c]=word[i]
+                    filled.add((r,c))
+                c+=1
+        else:
+            if toFillVertical:
+                r,c = toFillVertical.pop()
+                tempV.append((r,c))
+                for i in range(length):
+                    if crossword[r][c]!="-" and crossword[r][c]!=word[i]: 
+                    # has a letter in it already, then wrong
+                        check= False
+                        break
+                    elif crossword[r][c]=="-":
+                        crossword[r][c]=word[i]
+                        filled.add((r,c))
+                    r+=1
+            else:
+                check = False
+                break
+    if not check:
+        # we have to undo any filling
+        for r,c in filled:
+            crossword[r][c]="-"
+        horizontal[length].extend(tempH)
+        vertical[length].extend(tempV)
+    return check
+def findVertical(crossword):
+    d ={}
+    row = len(crossword)
+    col = len(crossword[0])
+    for c in range(col):
+        r = 0
+        found = False
+        length = 0
+        while r<row:
+            if crossword[r][c]=="-":
+                if not found:
+                    start= (r,c)
+                length+=1
+                found = True
+            else:
+                if found: # we are done with 1 segment
+                    if length not in d:
+                        d[length]= []
+                    d[length].append(start)
+                    length=0
+                found = False
+            r+=1
+        if found:
+            if length not in d:
+                d[length]= []
+            d[length].append(start)            
+    if 1 in d:
+        d.pop(1)
+    return d
+    
+def findHorizontal(crossword):
+    d ={}
+    row = len(crossword)
+    col = len(crossword[0])
+    for c in range(row):
+        r = 0
+        found = False
+        length = 0
+        while r<col:
+            if crossword[c][r]=="-":
+                if not found:
+                    start= (c,r)
+                length+=1
+                found = True
+            else:
+                if found: # we are done with 1 segment
+                    if length not in d:
+                        d[length]= []
+                    d[length].append(start)
+                    length=0
+                found = False
+            r+=1
+        if found:
+            if length not in d:
+                d[length]= []
+            d[length].append(start)            
+    if 1 in d:
+        d.pop(1)
+    return d
+
+def lengthToWord(words):
+    d= {}
+    for word in words:
+        if len(word) not in d:
+            d[len(word)]= []
+        d[len(word)].append(word)
+    return d
+    
+#crossword = ['+-++++++++', '+-++++++++', '+-++++++++', '+-----++++', '+-+++-++++', '+-+++-++++', '+++++-++++', '++------++', '+++++-++++', '+++++-++++']
+#words = ["LONDON","DELHI","ICELAND","ANKARA"]
+#crosswordPuzzle(crossword,words)
+#crossword = ['+-++++++++', '+-++++++++', '+-------++', '+-++++++++', '+-++++++++', '+------+++', '+-+++-++++', '+++++-++++', '+++++-++++', '++++++++++']
+#words = ["AGRA","NORWAY","ENGLAND","GWALIOR"]
+#crosswordPuzzle(crossword,words)
+#crossword = ['XXXXXX-XXX', 'XX------XX', 'XXXXXX-XXX', 'XXXXXX-XXX', 'XXX------X', 'XXXXXX-X-X', 'XXXXXX-X-X', 'XXXXXXXX-X', 'XXXXXXXX-X', 'XXXXXXXX-X']
+#words = ["ICELAND","MEXICO","PANAMA","ALMATY"]
+#crosswordPuzzle(crossword,words)
+###############################################################################
+def superDigit(n, k):
+    string = str(n)
+    n = sum([int(i) for i in string])
+    n = n*k
+    while len(n)!=1:
+        string = str(n)
+        n = sum([int(i) for i in string])
+    return n
+    
+#You can perform the following operations on the string, :
+#
+#Capitalize zero or more of 's lowercase letters.
+#Delete all of the remaining lowercase letters in .
+#Given two strings,  and , determine if it's possible to make a equal to  b as described. 
+#If so, print YES on a new line. Otherwise, print NO.
+def abbreviation(a, b):
+    return
+
+
+#553. Optimal Division
+def optimalDivision(nums: List[int]) :
+    myMax = -float("inf")
+    mySet = set(permutations(nums))
+    for item in mySet:
+        val = item[0]
+        for num in item[1:]:
+            val/=num
+        myMax = max(myMax,val)
+    return myMax
+    
+#1004. Max Consecutive Ones III
+#    Given an array A of 0s and 1s, we may change up to K values from 0 to 1.
+def longestOnes(A, K):
+    return
