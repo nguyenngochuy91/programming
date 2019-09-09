@@ -2216,3 +2216,48 @@ def optimalDivision(nums: List[int]) :
 #    Given an array A of 0s and 1s, we may change up to K values from 0 to 1.
 def longestOnes(A, K):
     return
+#1005. Maximize Sum Of Array After K Negations
+def largestSumAfterKNegations(A , K):
+    A.sort()
+    mySum = 0
+    negative = 0
+    for i in range(min(K,len(A))):
+        if A[i]<0:
+            mySum-=A[i]
+            negative+=1
+        else:
+            break # 
+    if A[i]==0:
+        return mySum+sum(A[i:])
+    elif A[i]>0:
+        if (K-negative)%2==0:
+            return mySum+sum(A[i:])
+        else:
+
+            return mySum+sum(A[i:])-2*min([abs(item) for item in A])
+    else:
+        # loop stop either because i == K-1 or i == len(A)-1
+        if negative == K:
+            return mySum+sum(A[i+1:])
+        else:
+            # means that K is greater than len (A)
+            remainingK = K-negative
+            if remainingK%2==0:
+                return mySum
+            else:
+                # we will have to substract 2*last element of A
+                return mySum+2*A[-1]
+def nextGreatestLetter(letters, target):
+        letters.sort()
+        start,stop = 0,len(letters)-1
+        while start+1<stop:
+            mid = (start+stop)//2
+            if letters[mid]<=target:
+                start=mid
+            else:
+                stop=mid
+        if letters[start]>target:
+            return letters[start]
+        if letters[stop]>target:
+            return letters[stop]
+        return letters[0]

@@ -189,6 +189,7 @@ def findRedundantConnection(edges):
                     path.append([currentNode,neighbor])
 #                    print (path,currentNode,neighbor,"visited")
                     # get the cycle
+                    print (path)
                     for i in range(len(path)):
                         edge = path[i]
 #                        print (edge)
@@ -227,5 +228,5 @@ def findRedundantConnection(edges):
             edge =list(path)   
     return edge
 
-edges = [[1,2], [2,3], [3,4], [1,4], [1,5]]
-print (findRedundantConnection(edges))
+#edges = [[1,2], [2,3], [3,4], [1,4], [1,5],[6,7],[8,9]]
+#print (findRedundantConnection(edges))
