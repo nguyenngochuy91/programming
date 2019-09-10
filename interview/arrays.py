@@ -2261,3 +2261,31 @@ def nextGreatestLetter(letters, target):
         if letters[stop]>target:
             return letters[stop]
         return letters[0]
+#51. N-Queens        
+def solveNQueens(n):
+    ans = []
+    def dfs(queensInfo,currentRow):
+        if currentRow==n:
+            matrix = [["."]*n for i in range(n)]
+            for x,y in queensInfo:
+                matrix[x][y]= "Q"
+            matrix = ["".join(item) for item in matrix]
+            ans.append(matrix)
+        else:
+            for col in range(n):
+                # check if there is a possible assignment
+                isValid = checkValid(queensInfo,currentRow,col)
+                if isValid:
+                    queensInfo.append([currentRow,col])
+                    dfs(queensInfo,currentRow+1)
+                    queensInfo.pop()
+    def checkValid(queensInfo,currentRow,col):
+        for x,y in queensInfo:
+            if x== currentRow or y==col:
+                return False
+            if abs((x-currentRow)/(y-col))==1:
+                return False
+        return True       
+    dfs([],0)
+    return ans
+print (solveNQueens(5))

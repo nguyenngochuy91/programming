@@ -47,6 +47,7 @@ class TreeNode(object):
             rightIsGood, rightHeight = rightInfo[0],rightInfo+1
             
             return abs(leftHeight-rightHeight)<=1 and leftIsGood and rightIsGood
+        
 
 a = TreeNode(3)
 b = TreeNode(4)
