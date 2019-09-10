@@ -2288,4 +2288,57 @@ def solveNQueens(n):
         return True       
     dfs([],0)
     return ans
-print (solveNQueens(5))
+#print (solveNQueens(5))
+# 980 unique path III
+#On a 2-dimensional grid, there are 4 types of squares:
+#
+#1 represents the starting square.  There is exactly one starting square.
+#2 represents the ending square.  There is exactly one ending square.
+#0 represents empty squares we can walk over.
+#-1 represents obstacles that we cannot walk over.
+def uniquePathsIII(grid):
+#    paths   = []
+    row  = len(grid)
+    col = len(grid[0])
+    nonObstacles = 1
+    for r in range(row):
+        for c in range(col):
+            if grid[r][c]==1:
+                start = (r,c)
+            if grid[r][c]==2:
+                stop = (r,c)
+            if grid[r][c] ==0:
+                nonObstacles+=1
+    visited =set()
+    visited.add(start)
+    
+    # find the start (1) and the stop (2)
+    def dfs(visited,currentPath,currentNode,stop,row,col,nonObstacles):
+#        print (currentNode,stop)
+        if currentNode == stop and len(visited)== nonObstacles+1:
+            print (currentPath)
+            return 1
+        else:
+            num = 0
+            temp = [(1,0),(0,1),(-1,0),(0,-1)]
+            a,b  = currentNode
+            for x,y in temp:
+                A,B = a+x,b+y
+                if A>=0 and B>=0 and A<row and B<col:
+                    if (A,B) not in visited and (grid[A][B]==0 or grid[A][B]==2):
+                        visited.add((A,B))
+                        currentPath.append((A,B))
+#                        print (A,B)
+                        val = dfs(visited,currentPath,(A,B),stop,row,col,nonObstacles)
+                        currentPath.pop()
+                        visited.remove((A,B))
+                        num+=val
+            return num
+    res= dfs(visited,[start],start,stop,row,col,nonObstacles)
+
+    return res
+#grid = [[1,0],[0,2]]
+#uniquePathsIII(grid)
+#grid = [[1,0,0,0],[0,0,0,0],[0,0,0,2]]
+#uniquePathsIII(grid)
+#grid = [[1,0,0,0],[0,0,0,0],[0,0,2,-1]]
