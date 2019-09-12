@@ -230,3 +230,15 @@ def findRedundantConnection(edges):
 
 #edges = [[1,2], [2,3], [3,4], [1,4], [1,5],[6,7],[8,9]]
 #print (findRedundantConnection(edges))
+
+#834. Sum of Distances in Tree
+#An undirected, connected tree with N nodes labelled 0...N-1 and N-1 edges are given.
+#
+#The ith edge connects nodes edges[i][0] and edges[i][1] together.
+#
+#Return a list ans, where ans[i] is the sum of the distances between node i and all other nodes.
+def sumOfDistancesInTree(N,edges):
+    res = []
+    return 
+    
+    

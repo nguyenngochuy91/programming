@@ -2342,3 +2342,151 @@ def uniquePathsIII(grid):
 #grid = [[1,0,0,0],[0,0,0,0],[0,0,0,2]]
 #uniquePathsIII(grid)
 #grid = [[1,0,0,0],[0,0,0,0],[0,0,2,-1]]
+    
+#756. Pyramid Transition Matrix
+#We are stacking blocks to form a pyramid. Each block has a color which is a one letter string.
+#
+#We are allowed to place any color block C on top of two adjacent blocks of colors A and B, if and only if ABC is an allowed triple.
+#
+#We start with a bottom row of bottom, represented as a single string. We also start with a list of allowed triples allowed. Each allowed triple is represented as a string of length 3.
+#
+#Return true if we can build the pyramid all the way to the top, otherwise false.
+def pyramidTransition(bottom,allowed):
+    d= {}
+    for x,y,z in allowed:
+        if (x,y) not in d:
+            d[(x,y)] = set()
+        d[(x,y)].add(z)
+    level = len(bottom)-1
+#    print (d)
+    def dfs(currentString,currentLevel,path):
+#        print (currentString,currentLevel,path)
+        if currentLevel ==0:
+#            print (path)
+            return True
+        else:
+            # this to store potential combination for upper level
+            potentialNextLevel =[]
+            for i in range(len(currentString)-1):
+                first,second = (currentString[i],currentString[i+1])
+                myTuple = (first,second)
+                if myTuple not in d:
+                    return False 
+                else:
+                    potential = d[myTuple]
+                    potentialNextLevel.append(potential)
+            arr  = set([""])
+            for potential in potentialNextLevel:
+                temp = set()
+                for item in potential:
+                    for string in arr:
+                        temp.add(string+item)
+                arr = temp
+#            print (2385,arr)
+            for string in arr:               
+                path.append(string)
+                check = dfs(string,currentLevel-1,path)
+                if check:
+                    return True
+                path.pop()
+            return False
+    return dfs(bottom,level,[bottom])
+#bottom = "BCD"
+#allowed = ["BCG", "CDE", "GEA", "FFF"]
+#print (pyramidTransition(bottom,allowed))
+#378. Kth Smallest Element in a Sorted Matrix
+def kthSmallest(matrix,k):
+    n = len(matrix)
+    current = 0
+    size = len(matrix)
+    while n!=0:
+        if current+2*n-1>=k:
+            # we we should try to find our number 
+            i,j = size-n,size-n+1
+            while i<size and j<size:
+                numR = matrix[size-n][i]
+                numC = matrix[j][size-n]
+                current+=1
+                if current==k:
+                    print (i,j,numR,numC)
+                    return min(numR,numC)
+                else:
+                    if numR<numC:
+                        i+=1
+                    else:
+                        j+=1
+            while i<size:
+                numR = matrix[size-n][i]
+                current+=1
+                if current==k:
+                    return numR
+                i+=1
+            while j<size:
+                numC = matrix[j][size-n]
+                current+=1
+                if current==k: 
+                    return numC
+                j+=1
+            n-=1
+        else:
+            current+=2*n-1
+            n-=1
+#matrix= [[1,5,9],[10,11,13],[12,13,15]]
+#k= 5 
+#print (kthSmallest(matrix,k))
+def totalFruit(tree):            
+    arr = []
+    current=tree[0]
+    count = 1
+    for t in tree[1:]:
+        if t==current:
+            count+=1
+        else:
+            arr.append((current,count))
+            count = 1
+            current =t
+    arr.append((current,count))
+    if len(arr)<=1:
+        return arr[0][1]
+    maxSum = 0
+    i = 0
+    d= {}
+    while i <len(arr)-1:
+        if len(d)==0:
+            firstCount =arr[i][1]
+            firstType   = arr[i][0]
+            d[firstType]=firstCount
+            currentSum= firstCount
+            j = i+1
+        foundNew = False
+        while j<len(arr):
+            newType,newCount = arr[j]
+            if newType not in d and len(d)==2:
+
+                foundNew= True
+                break
+            elif newType not in d and len(d)==1:
+                d[newType] = newCount
+                currentSum+=newCount
+            else:
+                d[newType]+=newCount
+                currentSum+=newCount
+            j+=1
+        maxSum = max(maxSum,currentSum)
+        # if the while loop break because j == len(arr)
+        if not foundNew:
+            return maxSum
+        else:
+            # we found a newtype, increase index i until 1 of the number pop
+            while True:
+                currentType,currentCount = arr[i]
+                d[currentType]-=currentCount
+                currentSum -= currentCount
+                if d[currentType]==0:
+                    d.pop(currentType)
+                    i+=1
+                    break # we are done
+                i+=1
+
+            
+    return maxSum
