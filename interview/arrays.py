@@ -2490,3 +2490,51 @@ def totalFruit(tree):
 
             
     return maxSum
+#232. Implement Queue using Stacks
+#Implement the following operations of a queue using stacks.
+#
+#push(x) -- Push element x to the back of queue.
+#pop() -- Removes the element from in front of queue.
+#peek() -- Get the front element.
+#empty() -- Return whether the queue is empty.
+class MyQueue:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.main = []
+        self.stack =[]
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        
+
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+#1103. Distribute Candies to People        
+def distributeCandies(candies,num_people):
+    res = [0]*num_people
+    return
+#88. Merge Sorted Array    
+def merge(nums1, m, nums2, n):
+    stop = m+n-1
+    while m>-1 and n>-1:
+        current1= nums[m]
+        current2 = nums[n]    
