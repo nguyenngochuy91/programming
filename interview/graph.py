@@ -241,4 +241,3 @@ def sumOfDistancesInTree(N,edges):
     res = []
     return 
     
-    

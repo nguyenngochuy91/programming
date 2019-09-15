@@ -24,21 +24,11 @@ def findContiguousMaxSum(array):
 
 # finding the contiguous sub-array that has the maximum sum of a given array
 def findContiguousArrayMaxSum(array):
-    output = 0
-    localMax = 0
-    start = 0
-    localStart = 0
-    stop = 0
-    for i in range(len(array)):
-        number = array[i]
-        if localMax<=0:
-            localStart = i
-        localMax = max(0,localMax+number)
-        if output<localMax:
-            start = localStart
-            stop = i
-        output = max(output,localMax)
-    return array[start:stop+1] if stop!=0 else []
+    result = 0
+    currentBest = 0
+    start,stop = 0,0
+#    for index,num in enumerate(array):
+    return start,stop
 #array=[-1,-2,-3,-5]
 #print (findContiguousArrayMaxSum(array))
 
@@ -2532,9 +2522,56 @@ class MyQueue:
 def distributeCandies(candies,num_people):
     res = [0]*num_people
     return
-#88. Merge Sorted Array    
-def merge(nums1, m, nums2, n):
-    stop = m+n-1
-    while m>-1 and n>-1:
-        current1= nums[m]
-        current2 = nums[n]    
+def reverseParentheses(s: str) -> str:
+    stack = []
+    output = []
+    string = ""
+    res = ""
+    for item in s:
+        if item=="(":
+            stack.append("(")
+            if string:
+                output.append(string)
+                string = ""
+        elif item== ")":
+#            print ("2547, stack {}, output {}, string {}, res {}".format(stack,output,string,res))
+            stack.pop()
+            if string:
+                output.append(string)
+            if not stack:
+                myString = "".join(output)
+                res+=myString[::-1]
+            else:
+                myString = output.pop()
+                if output:
+                    output[-1]+=myString[::-1]
+                else:
+                    output.append(myString[::-1])
+            string = ""
+#            print ("2557, stack {}, output {}, string {}, res {}".format(stack,output,string,res))
+        else:
+            if not stack:         
+                res+=item
+            else:
+                string+=item
+    if string:
+        res+=string
+#    print (stack,output)
+    return res
+#s = "(abcd)"
+#print (reverseParentheses(s))
+#s = "(u(love)i)"
+#print (reverseParentheses(s))
+#s = "(ed(et(oc))el)"
+#print (reverseParentheses(s))
+#s = "a(bcdefghijkl(mno)p)q"
+#print (reverseParentheses(s))
+#s= "((eqk((h))))"
+#print (reverseParentheses(s))
+    
+#5191. K-Concatenation Maximum Sum
+def kConcatenationMaxSum(arr: List[int], k: int) -> int:
+    start ,stop =findContiguousArrayMaxSum(arr)
+    print (start,stop)
+arr =[1,-2,1]
+kConcatenationMaxSum(arr,1)
