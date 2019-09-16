@@ -6,6 +6,34 @@ Created on Mon Sep  2 21:46:44 2019
 """
 import heapq
 from collections import deque
+
+# generate matrix given edges
+def generate(arr,n):
+    d= {}
+    for x,y in arr:
+        if x not in d:
+            d[x]=[]
+        if y not in d:
+            d[y]=[]
+        d[x].append(y)
+        d[y].append(x)
+    matrix = []
+    for i in range(n):
+        tmp= []
+        if i not in d:
+            matrix.append([0]*n)
+            continue
+        for j in range(n):
+            if j in d[i]:
+                tmp.append(1)
+            else:
+                tmp.append(0)
+        matrix.append(tmp)
+    return matrix
+    
+
+
+
 #The Ruler of HackerLand believes that every citizen of the country should have access to a library. 
 #Unfortunately, HackerLand was hit by a tornado that destroyed all of its libraries and obstructed its roads! 
 #As you are the greatest programmer of HackerLand, the ruler wants your help to repair the roads and build 
@@ -106,7 +134,7 @@ def findShortest(graph_nodes, graph_from, graph_to, ids, val):
 #graph_nodes, graph_from, graph_to, ids, val= 4 ,[1, 1, 4] ,[2, 3, 2] ,[1, 2, 1, 1], 1
 #findShortest(graph_nodes, graph_from, graph_to, ids, val)
 graph_nodes, graph_from, graph_to, ids, val=5 ,[1, 1, 2, 3] ,[2, 3, 4, 5] ,[1, 2, 3, 3, 2] ,2
-print(findShortest(graph_nodes, graph_from, graph_to, ids, val))
+#print(findShortest(graph_nodes, graph_from, graph_to, ids, val))
 
 #DFS: Connected Cell in a Grid
 def maxRegion(grid):
@@ -241,3 +269,112 @@ def sumOfDistancesInTree(N,edges):
     res = []
     return 
     
+#given a graph, find the number of connected component
+def numberOfConnectedComponent(matrix):
+    size  =0
+    n = len(matrix)
+    visited = [False]*n
+    def dfs(visited,current,n):
+        for node in range(n):
+            if matrix[current][node] and not visited[node]:
+                visited[node]= True
+                dfs(visited,node,n)
+    for node in range(n):
+        if not visited[node]:
+            size+=1
+            dfs(visited,node,n)
+    return size
+#matrix = [[False,True,False,True], 
+# [True,False,True,False], 
+# [False,True,False,True], 
+# [True,False,True,False]]
+#print (numberOfConnectedComponent(matrix))
+
+#given a graph, and a vertex, find the size of connected component of that vertex
+def dfsComponentSize(matrix, vertex):
+    n = len(matrix)
+    visited = [False]*n
+    visited[vertex]= True
+    def dfs(visited,current,n):
+        size = 1
+        for node in range(n):
+            if matrix[current][node] and not visited[node]:
+                visited[node]= True
+                size+=dfs(visited,node,n)
+        return size
+    return dfs(visited,vertex,n)
+
+#given a graph, get all the connected component, recursive style
+def findAllConnectedComponentDFS(matrix):
+    n = len(matrix)
+    visited = [False]*n
+    cc= []
+    def dfs(visited,current,n):
+        path =[current]
+        for node in range(n):
+            if matrix[current][node] and not visited[node]:
+                visited[node]= True
+                path.extend(dfs(visited,node,n))
+        return path
+    for node in range(n):
+        if not visited[node]:
+            visited[node]= True
+            path = dfs(visited,node,n)
+            cc.append(path)
+    return cc
+#arr = [[1,2],[2,3],[4,5],[7,8],[9,10],[10,11]]
+#matrix = generate(arr,11)
+#print (matrix)
+#print (findAllConnectedComponentDFS(matrix))
+
+#given a graph, get all the connected component, while style
+def findAllConnectedComponentBFS(matrix):
+    n = len(matrix)
+    visited = [False]*n
+    cc= []
+    for node in range(n):
+        if not visited[node]:
+            queue = [node]
+            visited[node] = True
+            path  = []
+            while queue:
+                currentNode = queue.pop()
+                path.append(currentNode)
+                for neighbor in range(n):
+                    if not visited[neighbor] and matrix[currentNode][neighbor]:
+                        visited[neighbor] = True
+                        queue.append(neighbor)
+            cc.append(path)
+    return cc
+#arr = [[1,2],[2,3],[4,5],[7,8],[9,10],[10,11]]
+#matrix = generate(arr,11)
+#print (matrix)
+#print (findAllConnectedComponentBFS(matrix))
+
+# given a graph, check if it is a tree (no cycle, and all connected)
+def isTree(matrix):
+    n = len(matrix)
+    numberOfConnected = 0
+    visited = [False]*n
+    def dfs(visited,currentNode,parentNode,n):
+        for node in range(n):
+            if visited[node] and node !=parentNode and matrix[currentNode][node]:
+                return True
+            elif not visited[node] and matrix[currentNode][node]:
+                visited[node]= True
+                if dfs(visited,node,currentNode,n):
+                    return True
+        return False
+    for node in range(n):
+        if not visited[node]:
+            numberOfConnected+=1
+            visited[node]=True
+            if dfs(visited,node,None,n):
+                return False
+#    print (numberOfConnected)
+    return numberOfConnected==1
+    
+#arr = [[0,1],[1,2],[2,3],[3,4],[2,5],[4,6],[1,7],[5,0]]
+#matrix = generate(arr,7)
+#print (matrix)
+#print (isTree(matrix))
