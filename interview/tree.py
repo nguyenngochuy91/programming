@@ -56,6 +56,17 @@ d = TreeNode(6)
 e = TreeNode(7)
 f = TreeNode(8,d,e)
 g = TreeNode(10,c,f)
+
+# segment tree to store info of arr
+class SegmentTreeNode:
+    def __init__(self,arr):
+        return        
+        
+class SegmentTreeArray:
+    def __init__(self,arr):
+        return
+        
+        
 #g.inTraversal(g)
 #998. Maximum Binary Tree II998.  Binary Tree II
 #
