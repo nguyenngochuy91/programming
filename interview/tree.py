@@ -83,9 +83,14 @@ class SegmentTree:
             node.left  = leftNode
             node.right = rightNode
             return node
-
+    def printOut(self,node):
+        if node:
+            self.printOut(node.left)
+            print (node.val)
+            self.printOut(node.right)
 arr  = [0,1,2,3,4,5,6]
 tree = SegmentTree(arr)
+tree.printOut(tree.root)
 class SegmentTreeArray:
     def __init__(self,arr):
         return
