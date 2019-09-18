@@ -58,10 +58,34 @@ f = TreeNode(8,d,e)
 g = TreeNode(10,c,f)
 
 # segment tree to store info of arr
-class SegmentTreeNode:
+class SegmentNode:
+    def __init__(self,val,start,stop,right=None,left= None):
+        self.val   = val
+        self.start = start
+        self.stop  = stop
+        self.right = right
+        self.left  = left
+class SegmentTree:
     def __init__(self,arr):
-        return        
-        
+        self.root = self.intialize(arr,0,len(arr)-1)
+    
+    def intialize(self,arr,start,stop):
+        if start == stop:
+            node = SegmentNode(arr[start],start,stop)
+            return node
+        elif start<stop:
+            mid = (start+stop)//2
+            leftNode   = self.intialize(arr,start,mid)
+            rightNode  = self.intialize(arr,mid+1,stop)
+            lefVal     = leftNode.val
+            rightVal   = rightNode.val
+            node       = SegmentNode(lefVal+rightVal,start,stop)
+            node.left  = leftNode
+            node.right = rightNode
+            return node
+
+arr  = [0,1,2,3,4,5,6]
+tree = SegmentTree(arr)
 class SegmentTreeArray:
     def __init__(self,arr):
         return
