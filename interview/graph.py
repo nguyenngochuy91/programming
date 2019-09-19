@@ -217,7 +217,7 @@ def findRedundantConnection(edges):
                     path.append([currentNode,neighbor])
 #                    print (path,currentNode,neighbor,"visited")
                     # get the cycle
-                    print (path)
+#                    print (path)
                     for i in range(len(path)):
                         edge = path[i]
 #                        print (edge)
@@ -378,3 +378,35 @@ def isTree(matrix):
 #matrix = generate(arr,7)
 #print (matrix)
 #print (isTree(matrix))
+    
+
+# given a graph, check it has a cycle, using normal dfs
+def hasCycle(matrix):
+    n = len(matrix)
+    visited = [False]*n
+    def dfs(visited,currentNode,parentNode,n):
+        for node in range(n):
+            if matrix[currentNode][node]:
+            # if the node is visited and not same as parent 
+                if parentNode!=node and visited[node]:
+                    return True
+                elif not visited(node):
+                    visited[node] = True
+                    if dfs(visited,node,currentNode,n):
+                        return True
+        return False
+    for node in range(n):
+        if not visited[node]:
+            visited[node] = True
+            if dfs(visited,node,None,n):
+                return True
+    return False
+
+# given a graph, check it has a cycle using coloring
+def hasCycleColor(matrix):
+    return
+
+# given a graph, find all of its cycle
+def getAllCycle(matrix):
+    n  = len(matrix)
+    
