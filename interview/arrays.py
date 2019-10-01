@@ -2594,4 +2594,155 @@ def minKnightMoves(x: int, y: int) -> int:
                         queue.append((newX,newY))
         step+=1
     return
-#print (minKnightMoves(10,20))
+#print (minKnightMoves(10,20)
+def equalSubstring(s: str, t: str, maxCost: int) -> int:
+    maxLength = 0
+    seq = [abs(ord(s[i])-ord(t[i])) for i in range(len(s))]
+    start,stop = 0,0
+#    print (seq)
+    while stop<len(seq):
+        num =seq[stop]
+#        print (stop,num,maxCost,maxLength)
+        if maxCost>=num:
+            maxCost-=num
+            stop+=1
+            print (maxCost,num)
+            maxLength = max(maxLength,stop-start)
+        else:
+            maxLength = max(maxLength,stop-start)
+            while start<stop and maxCost<num: # we have include some number
+                first = seq[start]
+                maxCost+=first
+                start+=1
+            if start == stop and maxCost<num:
+                stop+=1
+                start+=1
+    return maxLength
+#s,t,cost="abcd","cdef",1
+#print (equalSubstring(s,t,cost))
+def removeDuplicates(s: str, k: int) -> str:
+    myList = []
+    currentChar = s[0]
+    count = 1
+#    check = False
+    for item in s[1:]:
+        if item==currentChar:
+            count+=1
+        else:
+            myList.append((currentChar,count))
+            currentChar = item
+            count = 1
+    myList.append((currentChar,count))
+    stack = []
+#    print (myList)
+    for item in myList:
+        char,num = item
+#        print (char,num)
+        if num%k ==0:
+            continue
+        else:
+            num=num%k
+            if stack:
+                lastChar,lastNum = stack[-1]
+                if lastChar== char:
+                    newNum = (num+lastNum)%k
+                    if newNum==0:
+                        stack.pop()
+                    else:
+                        stack[-1][1]=newNum
+                else:
+                    stack.append([char,num])
+            else:
+                stack.append([char,num])
+    string = ""
+    for char,num in stack:
+        string+=char*num
+    return string
+#    
+#s = "deeedbbcccbdaa"
+#k = 3
+#print (removeDuplicates(s, k))
+#s = "pbbcggttciiippooaais"
+#k = 2
+#print (removeDuplicates(s, k))
+def minimumMoves(grid) -> int:
+    row = len(grid)
+    col = len(grid[0])
+    visited = {}
+    for r in range(row):
+        for c in range(col):
+            try:
+                visited[((r,c),(r,c+1))]= False
+            except:
+                pass
+            try:
+                visited[((r,c+1),(r,c))]= False
+            except:
+                pass
+            try:
+                visited[((r,c),(r+1,c))]= False
+            except:
+                pass
+            try:
+                visited[((r+1,c),(r,c))]= False
+            except:
+                pass
+    queue = deque([((0,0),(0,1))])
+    visited[((0,0),(0,1))]= True
+    move = 0
+    while queue:
+        size = len(queue)
+        for i in range(size):
+            first,second = queue.popleft()
+            if first==(row-1,col-2) and second == (row-1,col-1):
+                return move
+            else:
+                firstX,firstY = first
+                secondX,secondY = second
+                if firstX==secondX: # snake is in horizontal, nam ngang
+                    
+                    direction = [((firstX+1,firstY),(secondX+1,secondY)),
+                                 ((firstX,firstY+1),(secondX,secondY+1)),
+                                 ((firstX-1,firstY),(secondX-1,secondY)),
+                                 ((firstX,firstY-1),(secondX,secondY-1)),
+                                 ((firstX,firstY),(firstX+1,firstY)),
+                                 ((firstX,firstY),(firstX-1,firstY))]                       
+                else:
+                    # snake is in vertical, nam doc
+                    direction = [((firstX+1,firstY),(secondX+1,secondY)),
+                                 ((firstX,firstY+1),(secondX,secondY+1)),
+                                 ((firstX-1,firstY),(secondX-1,secondY)),
+                                 ((firstX,firstY-1),(secondX,secondY-1)),
+                                 ((firstX,firstY),(firstX,firstY+1)),
+                                 ((firstX,firstY),(firstX,firstY-1))]
+                for potential in direction:
+                    (firstX,firstY),(secondX,secondY)=potential
+                    if min(firstX,firstY,secondX,secondY)>=0 and max(firstX,secondX)<row and max(firstY,secondY)<col:
+                        if grid[firstX][firstY]==0 and grid[secondX][secondY]==0 and potential in visited and not visited[potential]:
+                            visited[potential]= True
+                            queue.append(potential)
+        move+=1
+    return -1
+grid =[[0,0,0,0,0,1],
+       [1,1,0,0,1,0],
+       [0,0,0,0,1,1],
+       [0,0,1,0,1,0],
+       [0,1,1,0,0,0],
+       [0,1,1,0,0,0]]
+#print (minimumMoves(grid))
+grid = [[0,0,0,0,0,0,0,0,0,1],
+        [0,1,0,0,0,0,0,1,0,1],
+        [1,0,0,1,0,0,1,0,1,0],
+        [0,0,0,1,0,1,0,1,0,0],
+        [0,0,0,0,1,0,0,0,0,1],
+        [0,0,1,0,0,0,0,0,0,0],
+        [1,0,0,1,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [1,1,0,0,0,0,0,0,0,0]]
+
+print (minimumMoves(grid))
+
+
+
+
