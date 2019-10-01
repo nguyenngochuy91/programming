@@ -2558,17 +2558,7 @@ def reverseParentheses(s: str) -> str:
         res+=string
 #    print (stack,output)
     return res
-#s = "(abcd)"
-#print (reverseParentheses(s))
-#s = "(u(love)i)"
-#print (reverseParentheses(s))
-#s = "(ed(et(oc))el)"
-#print (reverseParentheses(s))
-#s = "a(bcdefghijkl(mno)p)q"
-#print (reverseParentheses(s))
-#s= "((eqk((h))))"
-#print (reverseParentheses(s))
-    
+
 #5191. K-Concatenation Maximum Sum
 def kConcatenationMaxSum(arr: List[int], k: int) -> int:
     start ,stop =findContiguousArrayMaxSum(arr)
