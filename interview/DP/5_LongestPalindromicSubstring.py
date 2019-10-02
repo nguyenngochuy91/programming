@@ -60,4 +60,72 @@ def longestPalindromeReverse(s1):
 
 
 def longestPalindromeDP(s):
-    return
+    arr =[]
+    l,r=0,-1
+    for i in range(len(s)):
+        arr.append([i,i])
+        l,r = i,i
+        try:
+            if s[i]==s[i+1]:
+                arr.append([i,i+1])
+        except:
+            continue
+    maxLength =1
+    for start,stop in arr:
+        while True:
+            if maxLength<stop+1-start:
+                maxLength = stop+1-start
+                l,r = start,stop
+            if start==0 or stop==len(s)-1:
+                break
+            else:
+                start-=1
+                stop+=1
+                if s[start]==s[stop]:
+                    continue
+                else:
+                    break
+
+    return s[l:r+1]
+#s = "adfdasssssafsaadafsa"
+#print (longestPalindromeDP(s))
+
+def longestPalindromeSpace(s):
+    l,r=0,-1
+    maxLength  = 0
+    for i in range(len(s)):
+        start,stop =i,i
+        while True:
+            if maxLength<stop+1-start:
+                maxLength = stop+1-start
+                l,r = start,stop
+            if start==0 or stop==len(s)-1:
+                break
+            else:
+                start-=1
+                stop+=1
+                if s[start]==s[stop]:
+                    continue
+                else:
+                    break
+        start,stop =i,i+1
+        try:
+            if s[i]==s[i+1]:
+                while True:
+                    if maxLength<stop+1-start:
+                        maxLength = stop+1-start
+                        l,r = start,stop
+                    if start==0 or stop==len(s)-1:
+                        break
+                    else:
+                        start-=1
+                        stop+=1
+                        if s[start]==s[stop]:
+                            continue
+                        else:
+                            break  
+        except:
+            continue
+    return s[l:r+1]
+s= "cbbd"
+print (longestPalindromeSpace(s))
