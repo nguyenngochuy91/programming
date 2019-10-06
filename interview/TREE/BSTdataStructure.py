@@ -111,7 +111,27 @@ class TreeNode:
                 root.left = None
             return root    
     def lowestCommonAncestor(self,node1,node2):
-        return
+        myMin = min(node1.val,node2.val)
+        myMax = max(node1.val,node2.val)
+        def dfs(root,myMin,myMax):
+            if root:
+                val = root.val
+                if val>myMin and val<myMax or val == myMin or val== myMax:
+                    return root
+                elif val>myMax:
+                    return dfs(root.left,myMin,myMax)
+                elif val <myMin:
+                    return dfs(root.right,myMin,myMax)
+        return dfs(self,myMin,myMax)
+
+    def isBalanced(self):
+        def dfs(root):
+            if not root:
+                return True,0
+            bL,hL = dfs(root.left)
+            bR,hR = dfs(root.right)
+            return bL and bR and abs(hL-hR)<=1, max(hL,hR)+1
+        return dfs(self)[0]
 class TreeNodeModified:
     def __init__(self,val):
         self.val = val
